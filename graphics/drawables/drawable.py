@@ -5,12 +5,16 @@ Created on 10.07.2012
 '''
 
 class Drawable(object):
-	''' Interface for drawable objects.
+	''' Abstract class for drawable objects.
 
-	This Interface defines all methods a drawable object must implement.
+	This class defines all methods a drawable object must implement.
+
+	Attributes:
+		environment: The environment this drawable belongs to.
 	'''
-	def __init__(self):
-		pass
+	def __init__(self, environment=None):
+		# TODO check input
+		self.environment = environment
 
 	def draw(self):
 		''' Draws this object.
@@ -20,18 +24,19 @@ class Drawable(object):
 		# TODO: use logger
 		print("Not implemented draw")
 
-class Drawable2D(object):
+class Drawable2D(Drawable):
 	''' Abstract class for 2D objects.
 
 	This class provides some handy functions for drawable 2D objects.
 
 	Attributes:
 		x: The x coordinate of the left side of the object. This is a number.
-		x: The y coordinate of the bottom side of the object. This is a number.
+		y: The y coordinate of the bottom side of the object. This is a number.
 		width: The width of the object. This is a number.
 		height: The height of the object.  This is a number.
 	'''
-	def __init__(self, x=0, y=0, width=0, height=0):
+	def __init__(self, environment=None, x=0, y=0, width=0, height=0):
+		super(Drawable2D, self).__init__(environment)
 		# TODO: check input
 		self.x = x
 		self.y = y
@@ -45,17 +50,15 @@ class Drawable2D(object):
 
 		Returns: True if the object is visible, False otherwise.
 		'''
-		# TODO: get camera position
-		# temp {
-		camX = 0
-		camY = 0
-		camWidth = 500
-		camHeight = 500
-		# }
-		return self.x < (camX + camWidth) and \
-				(self.x + self.width) > camX and \
-				self.y < (camY + camHeight) and \
-				(self.y + self.height) > camY
+		if self.environment == None:
+			# TODO: use logger
+			print("No environment")
+			return
+		camera = self.environment.camera
+		return self.x < (camera.x + camera.width) and \
+				(self.x + self.width) > camera.x and \
+				self.y < (camera.y + camera.height) and \
+				(self.y + self.height) > camera.y
 
 	def draw(self):
 		''' Draws this object if it is visible.
@@ -72,3 +75,4 @@ class Drawable2D(object):
 		'''
 		# TODO: use logger
 		print("Not implemented draw2D")
+		
