@@ -12,6 +12,7 @@ class LocalisationManager(object):
 	Attributes:
 		language: The current language. This is a two letter code like "en".
 	'''
+	
 	def __init__(self, language="en"):
 		self.language = language
 
@@ -24,7 +25,6 @@ class LocalisationManager(object):
 
 		Returns: the current language.
 		'''
-		# TODO check input
 		return self.language
 
 	def set_language(self, language):
@@ -38,5 +38,4 @@ class LocalisationManager(object):
 			language: The new language to use. This mus be a string with two
 				characters.
 		'''
-		# TODO: check the input
 		self.language = language

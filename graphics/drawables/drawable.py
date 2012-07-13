@@ -4,6 +4,8 @@ Created on 10.07.2012
 @author: Donhilion
 '''
 
+import logging
+
 class Drawable(object):
 	''' Abstract class for drawable objects.
 
@@ -12,8 +14,8 @@ class Drawable(object):
 	Attributes:
 		environment: The environment this drawable belongs to.
 	'''
+
 	def __init__(self, environment=None):
-		# TODO check input
 		self.environment = environment
 
 	def draw(self):
@@ -21,8 +23,7 @@ class Drawable(object):
 
 		This method has to be implemented.
 		'''
-		# TODO: use logger
-		print("Not implemented draw")
+		logging.warn("Not implemented draw")
 
 class Drawable2D(Drawable):
 	''' Abstract class for 2D objects.
@@ -35,9 +36,9 @@ class Drawable2D(Drawable):
 		width: The width of the object. This is a number.
 		height: The height of the object.  This is a number.
 	'''
+	
 	def __init__(self, environment=None, x=0, y=0, width=0, height=0):
 		super(Drawable2D, self).__init__(environment)
-		# TODO: check input
 		self.x = x
 		self.y = y
 		self.width = width
@@ -51,8 +52,7 @@ class Drawable2D(Drawable):
 		Returns: True if the object is visible, False otherwise.
 		'''
 		if self.environment == None:
-			# TODO: use logger
-			print("No environment")
+			logging.warn("No environment")
 			return
 		camera = self.environment.camera
 		return self.x < (camera.x + camera.width) and \
@@ -73,6 +73,5 @@ class Drawable2D(Drawable):
 
 		This method has to be implemented.
 		'''
-		# TODO: use logger
-		print("Not implemented draw2D")
+		logging.warn("Not implemented draw2D")
 		

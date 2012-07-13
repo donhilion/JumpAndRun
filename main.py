@@ -4,6 +4,8 @@ Created on 10.07.2012
 @author: Donhilion
 '''
 
+import logging
+
 
 # TODOs
 # Logger
