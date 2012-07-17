@@ -7,7 +7,7 @@ Created on 10.07.2012
 class RessourceManager(object):
 	''' A manager for ressources.
 
-	This manager loads ressources/files asynchronious.
+	This manager loads ressources/files asynchroniously.
 	'''
 	
 	def __init__(self):
@@ -31,7 +31,7 @@ class RessourceWrapper(object):
 	PENDING, LOADED, FAILED = range(3)
 
 	def __init__(self, name=""):
-		self.status = PENDING
+		self.status = RessourceWrapper.PENDING
 		self.messages = []
 		self.name = name
 		self.data = None	
