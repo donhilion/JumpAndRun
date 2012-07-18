@@ -12,6 +12,7 @@ class PictureManager(object):
 
 	def __init__(self):
 		self.lock = allocate_lock()
+		self.loaded = {}
 
 	def load_picture(self, name):
 		ressource_wrapper = RessourceWrapper(name = name)
@@ -22,8 +23,9 @@ class PictureManager(object):
 		try:
 			logging.debug("Begin loading picture " + ressource_wrapper.name)
 			self.lock.acquire()
-			ressource_wrapper.data = \
-				pygame.image.load(ressource_wrapper.name).convert()
+			ressource_wrapper.data = pygame.image.load("ressources/pictures/" \
+				+ ressource_wrapper.name).convert()
+			self.loaded[ressource_wrapper.name] = ressource_wrapper.data
 			self.lock.release()
 			logging.debug("End loading picture " + ressource_wrapper.name)
 			ressource_wrapper.status = RessourceWrapper.LOADED
