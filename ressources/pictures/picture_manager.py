@@ -2,7 +2,7 @@ import pygame
 import logging
 from thread import start_new_thread, allocate_lock
 
-from ressources.ressource_manager import RessourceWrapper # TODO: check import
+from ressources.ressource_manager import RessourceWrapper
 
 class PictureManager(object):
 	''' A manager for picture ressources.
