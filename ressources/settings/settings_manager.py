@@ -8,8 +8,11 @@ class SettingsManager(object):
 	'''
 	'''
 
+	MANAGER = None
+
 	def __init__(self):
 		self.settings = {}
+		SettingsManager.MANAGER = self
 
 
 	def load_setting(self, name):

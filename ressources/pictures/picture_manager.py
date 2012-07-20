@@ -10,9 +10,12 @@ class PictureManager(object):
 	This manager loads pictures asynchroniously.
 	'''
 
+	MANAGER = None
+
 	def __init__(self):
 		self.lock = allocate_lock()
 		self.loaded = {}
+		PictureManager.MANAGER = self
 
 	def load_picture(self, name):
 		ressource_wrapper = RessourceWrapper(name = name)
