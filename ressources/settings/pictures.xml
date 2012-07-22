@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dictionary> 
+    <list>
+        <name>backgrounds</name>
+        <entry> 
+            <key type="str">bg1</key> 
+            <value type="str">background.png</value> 
+        </entry> 
+        <entry> 
+            <key type="str">menu</key> 
+            <value type="str">menuBackground.png</value> 
+        </entry> 
+    </list>
+</dictionary>

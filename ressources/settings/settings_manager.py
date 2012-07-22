@@ -38,6 +38,28 @@ class SettingsManager(object):
 									entry.firstChild.data.strip()))
 					if key is not None and value is not None:
 						dictionary[key] = value
+				if node.nodeName == "list":
+					name = None
+					tempList = {}
+					for entry in node.childNodes:
+						if entry.nodeName == "name":
+							name = entry.firstChild.data.strip()
+						elif entry.nodeName == "entry":
+							key = None
+							value = None
+							for child in entry.childNodes:
+								if child.nodeName == "key":
+									key = eval("%s('%s')" % \
+										(child.getAttribute("type"),
+										child.firstChild.data.strip()))
+								if child.nodeName == "value":
+									value = eval("%s('%s')" % \
+										(child.getAttribute("type"),
+										child.firstChild.data.strip()))
+							if key is not None and value is not None:
+								tempList[key] = value
+					if name is not None:
+						dictionary[name] = tempList
 			self.settings[wrapper.name] = dictionary
 			wrapper.data = dictionary
 			wrapper.status = RessourceWrapper.LOADED

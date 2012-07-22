@@ -9,8 +9,8 @@ class LoadingWindow(object):
 	'''
 	'''
 
-	SETTINGS_FILES = ("graphics.xml", )
-	PICTURE_FILES = ("background.png", "menuBackground.png")
+	PICTURES_FILE = "pictures.xml"
+	SETTINGS_FILES = ("graphics.xml", PICTURES_FILE)
 
 	INTEND = "    "
 
@@ -20,6 +20,16 @@ class LoadingWindow(object):
 		self.screen = pygame.display.set_mode(LoadingWindow.SIZE, 0, 32)
 		self.font = pygame.font.SysFont("arial", 16)
 		self.font_height = self.font.get_linesize()
+
+	def load_pictures(self, pictures, infos, results):
+		infos.append("Start loading pictures")
+		manager = PictureManager()
+		for key in pictures:
+			for name in pictures[key]:
+				infos.append(LoadingWindow.INTEND + "Start loading " + \
+					pictures[key][name])
+				results.append(manager.load_picture(pictures[key][name]))
+
 
 	def load(self):
 		running = True
@@ -33,12 +43,6 @@ class LoadingWindow(object):
 			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
 			results.append(self.settings_manager.load_setting(file_name))
 
-		infos.append("Start loading pictures")
-		manager = PictureManager()
-		for file_name in LoadingWindow.PICTURE_FILES:
-			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
-			results.append(manager.load_picture(file_name))
-
 		while running:
 			for event in pygame.event.get():
 				if event.type == QUIT:
@@ -48,6 +52,9 @@ class LoadingWindow(object):
 				if result.status == RessourceWrapper.LOADED:
 					infos.append("Done loading " + result.name)
 					results.remove(result)
+					# load images
+					if result.name == LoadingWindow.PICTURES_FILE:
+						self.load_pictures(result.data, infos, results)
 				if result.status == RessourceWrapper.FAILED:
 					ok = False
 					infos.append("Error during loading " + result.name)
