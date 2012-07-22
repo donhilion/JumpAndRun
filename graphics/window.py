@@ -3,6 +3,7 @@ from pygame.locals import *
 import logging
 
 from ressources.settings.settings_manager import SettingsManager
+from menu import Menu
 
 class Window(object):
 	''' The main window.
@@ -25,6 +26,7 @@ class Window(object):
 			self.width = 400
 			self.height = 400
 		self.screen = pygame.display.set_mode((self.width, self.height), 0, 32)
+		self.menu = Menu(self.screen, self.width, self.height)
 
 	def start(self):
 		while True:
@@ -32,6 +34,7 @@ class Window(object):
 				if event.type == QUIT:
 					exit() # TODO: check what else has to be done
 
-			self.screen.fill((0, 0, 0))
+			#self.screen.fill((0, 0, 0))
+			self.menu.draw()
 
 			pygame.display.update()

@@ -10,12 +10,14 @@ class LoadingWindow(object):
 	'''
 
 	SETTINGS_FILES = ("graphics.xml", )
-	PICTURE_FILES = ("background.png", )
+	PICTURE_FILES = ("background.png", "menuBackground.png")
 
 	INTEND = "    "
 
+	SIZE = (WIDTH, HEIGHT) = (400, 400)
+
 	def __init__(self):
-		self.screen = pygame.display.set_mode((400, 400), 0, 32)
+		self.screen = pygame.display.set_mode(LoadingWindow.SIZE, 0, 32)
 		self.font = pygame.font.SysFont("arial", 16)
 		self.font_height = self.font.get_linesize()
 
@@ -53,7 +55,7 @@ class LoadingWindow(object):
 		
 			self.screen.fill((0, 0, 0))
 
-			line = 0
+			line = LoadingWindow.HEIGHT - len(infos) * self.font_height
 			for info in infos:
 				text = self.font.render(info, True, (0, 255, 0))
 				self.screen.blit(text, (8, line))
