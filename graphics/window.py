@@ -4,10 +4,14 @@ import logging
 
 from ressources.settings.settings_manager import SettingsManager
 from menu import Menu
+from game_surface import GameSurface
 
 class Window(object):
 	''' The main window.
 	'''
+
+	MENU, GAME = range(2)
+
 	def __init__(self):
 		self.settings_manager = SettingsManager.MANAGER
 		if self.settings_manager is not None:
@@ -26,7 +30,8 @@ class Window(object):
 			self.width = 400
 			self.height = 400
 		self.screen = pygame.display.set_mode((self.width, self.height), 0, 32)
-		self.menu = Menu(self.screen, self.width, self.height)
+		self.menu = Menu(self.screen, self.width, self.height, self)
+		self.game = GameSurface(self.screen, self.width, self.height, self)
 		self.current_display = self.menu
 
 	def start(self):
@@ -42,3 +47,9 @@ class Window(object):
 			self.current_display.draw()
 
 			pygame.display.update()
+
+	def switch(self, type):
+		if type == Window.MENU:
+			self.current_display = self.menu
+		elif type == Window.GAME:
+			self.current_display = self.game
