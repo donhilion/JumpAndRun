@@ -40,7 +40,7 @@ class Menu(object):
 				text = self.font.render(entry.text, True, (255, 255, 0))
 			else:
 				text = self.font.render(entry.text, True, (150, 150, 0))
-			self.screen.blit(text, (8, y)) # TODO center text
+			self.screen.blit(text, ((self.width - text.get_width()) / 2, y))
 			y += self.font_height + 5
 			i += 1
 
