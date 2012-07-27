@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from ressources.pictures.picture_manager import PictureManager
 from ressources.settings.settings_manager import SettingsManager
+from ressources.animations.animation_manager import AnimationManager
 from ressources.ressource_manager import RessourceWrapper
 
 class LoadingWindow(object):
@@ -11,6 +12,7 @@ class LoadingWindow(object):
 
 	PICTURES_FILE = "pictures.xml"
 	SETTINGS_FILES = ("graphics.xml", PICTURES_FILE)
+	ANIMATIONS_FILES = ("animations.xml",)
 
 	INTEND = "    "
 
@@ -42,6 +44,12 @@ class LoadingWindow(object):
 		for file_name in LoadingWindow.SETTINGS_FILES:
 			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
 			results.append(self.settings_manager.load_setting(file_name))
+
+		infos.append("Star loading animations")
+		self.animation_manager = AnimationManager()
+		for file_name in LoadingWindow.ANIMATIONS_FILES:
+			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
+			results.append(self.animation_manager.load_animation(file_name))
 
 		while running:
 			for event in pygame.event.get():

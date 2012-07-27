@@ -27,7 +27,7 @@ class PictureManager(object):
 			logging.debug("Begin loading picture " + ressource_wrapper.name)
 			self.lock.acquire()
 			ressource_wrapper.data = pygame.image.load("ressources/pictures/" \
-				+ ressource_wrapper.name).convert()
+				+ ressource_wrapper.name).convert_alpha()
 			self.loaded[ressource_wrapper.name] = ressource_wrapper.data
 			self.lock.release()
 			logging.debug("End loading picture " + ressource_wrapper.name)

@@ -10,5 +10,9 @@
             <key type="str">menu</key> 
             <value type="str">menuBackground.png</value> 
         </entry> 
+        <entry>
+            <key type="str">animationTest</key>
+            <value type="str">animationTest.png</value>
+        </entry>
     </list>
 </dictionary>
