@@ -52,7 +52,7 @@ class Menu(object):
 		elif key == K_RETURN:
 			entry = Menu.ENTRIES[self.selected]
 			if entry.action is not None:
-				(entry.action)()
+				entry.action()
 
 
 	def key_up(self, key):

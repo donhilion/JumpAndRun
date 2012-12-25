@@ -51,7 +51,7 @@ class Drawable2D(Drawable):
 
 		Returns: True if the object is visible, False otherwise.
 		'''
-		if self.environment == None:
+		if self.environment is None:
 			logging.warn("No environment")
 			return
 		camera = self.environment.camera

@@ -16,6 +16,6 @@ class GraphicsEnvironment(object):
 	'''
 	
 	def __init__(self, camera=None):
-		if camera == None:
+		if camera is None:
 			camera = Camera()
 		self.camera = camera

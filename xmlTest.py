@@ -5,7 +5,7 @@ baum = dom.parse("testXml.xml")
 
 for entry in baum.firstChild.childNodes: 
 	if entry.nodeName == "entry": 
-		key = wert = None
+		key = value = None
 
 		for node in entry.childNodes: 
 			if node.nodeName == "key": 

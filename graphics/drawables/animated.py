@@ -25,7 +25,7 @@ class Animated(object):
 			self.animation.append((count, frame))
 
 	def draw(self, surface, x, y, count):
-		count = count % self.max_frame_count
+		count %= self.max_frame_count
 		for part in self.animation:
 			if count > part[0]:
 				count -= part[0]
