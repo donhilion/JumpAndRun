@@ -18,6 +18,8 @@ class GameSurface(object):
 		self.bg = PictureManager.MANAGER.loaded["background.png"]
 		self.bg = pygame.transform.scale(self.bg, (height, height))
 		self.tick = 0
+		self.last_ticks = pygame.time.get_ticks()
+		
 		# begin test
 		from ressources.animations.animation_manager import AnimationManager
 		animation_manager = AnimationManager.MANAGER
@@ -30,10 +32,18 @@ class GameSurface(object):
 		while x < self.width:
 			self.screen.blit(self.bg, (x,0))
 			x += self.height
+
+		tick = self.tick / 10
+
 		# begin test
-		self.animated.draw(self.screen, 50, 50, self.tick)
+		self.animated.draw(self.screen, 150, 50, tick)
 		# end test
-		self.tick += 1
+
+		# calculate the ticks
+		current_ticks = pygame.time.get_ticks()
+		delta = (current_ticks - self.last_ticks)
+		self.tick += delta
+		self.last_ticks = current_ticks
 
 	def key_down(self, key):
 		if key == K_ESCAPE:
