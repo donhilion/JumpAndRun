@@ -33,6 +33,30 @@
             <right>99</right>
             <bottom>99</bottom>
         </frame>
+        <frame>
+            <name>charStill</name>
+            <picture>char.png</picture>
+            <left>9</left>
+            <top>4</top>
+            <right>57</right>
+            <bottom>78</bottom>
+        </frame>
+        <frame>
+            <name>charMov1</name>
+            <picture>char.png</picture>
+            <left>71</left>
+            <top>4</top>
+            <right>119</right>
+            <bottom>78</bottom>
+        </frame>
+        <frame>
+            <name>charMov2</name>
+            <picture>char.png</picture>
+            <left>133</left>
+            <top>4</top>
+            <right>181</right>
+            <bottom>78</bottom>
+        </frame>
     </frames>
     <animations>
         <animation>
@@ -52,6 +76,24 @@
             <part>
                 <duration>20</duration>
                 <frame>test4</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>charStill</name>
+            <part>
+                <duration>1</duration>
+                <frame>charStill</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>charMov</name>
+            <part>
+                <duration>20</duration>
+                <frame>charStill</frame>
+            </part>
+            <part>
+                <duration>20</duration>
+                <frame>charMov2</frame>
             </part>
         </animation>
     </animations>
