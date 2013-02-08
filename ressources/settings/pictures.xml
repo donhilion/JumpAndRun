@@ -18,5 +18,9 @@
             <key type="str">char</key>
             <value type="str">char.png</value>
         </entry>
+        <entry>
+            <key type="str">platform</key>
+            <value type="str">platform.png</value>
+        </entry>
     </list>
 </dictionary>

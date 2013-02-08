@@ -57,6 +57,30 @@
             <right>181</right>
             <bottom>78</bottom>
         </frame>
+        <frame>
+            <name>platformLeft</name>
+            <picture>platform.png</picture>
+            <left>0</left>
+            <top>0</top>
+            <right>8</right>
+            <bottom>19</bottom>
+        </frame>
+        <frame>
+            <name>platformMid</name>
+            <picture>platform.png</picture>
+            <left>9</left>
+            <top>0</top>
+            <right>9</right>
+            <bottom>19</bottom>
+        </frame>
+        <frame>
+            <name>platformRight</name>
+            <picture>platform.png</picture>
+            <left>11</left>
+            <top>0</top>
+            <right>19</right>
+            <bottom>19</bottom>
+        </frame>
     </frames>
     <animations>
         <animation>
