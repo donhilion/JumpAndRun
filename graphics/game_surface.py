@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import logging
 from game_objects.character import Character
+from game_objects.platform import Platform
 
 from ressources.pictures.picture_manager import PictureManager
 import window
@@ -22,6 +23,8 @@ class GameSurface(object):
 		self.dx = 0
 
 		self.character = Character()
+		self.platforms = []
+		self.platforms.append(Platform((0, 200), (500, 50)))
 
 	def draw(self):
 		x = 0
@@ -42,6 +45,11 @@ class GameSurface(object):
 			self.character.tick()
 			if self.dx != 0:
 				self.character.move(self.dx)
+
+		# draw the platforms
+		for platform in self.platforms:
+			platform.draw(self.screen, tick)
+
 
 		# draw the character
 		self.character.draw(self.screen, tick)
