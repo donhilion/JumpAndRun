@@ -26,6 +26,9 @@ class GameSurface(object):
 		self.platforms = []
 		self.platforms.append(Platform((0, 200), (500, 50)))
 
+	def reset_tick(self):
+		self.last_ticks = pygame.time.get_ticks()
+
 	def draw(self):
 		x = 0
 		while x < self.width:
@@ -42,6 +45,13 @@ class GameSurface(object):
 
 		# handle the ticks
 		for i in range(self.tick/10 - tick):
+			# check walking collision
+			standing = False
+			for platform in self.platforms:
+				if platform.collides(self.character._walking_line):
+					standing = True
+					break
+			self.character._is_falling = not standing
 			self.character.tick()
 			if self.dx != 0:
 				self.character.move(self.dx)

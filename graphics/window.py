@@ -53,3 +53,4 @@ class Window(object):
 			self.current_display = self.menu
 		elif type == Window.GAME:
 			self.current_display = self.game
+			self.game.reset_tick()
