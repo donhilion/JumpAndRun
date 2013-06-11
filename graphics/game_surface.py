@@ -21,6 +21,7 @@ class GameSurface(object):
 		self.tick = 0
 		self.last_ticks = pygame.time.get_ticks()
 		self.dx = 0
+		self.jumping = False
 
 		self.character = Character()
 		self.platforms = []
@@ -52,9 +53,11 @@ class GameSurface(object):
 					standing = True
 					break
 			self.character._is_falling = not standing
-			self.character.tick()
+			if standing and self.jumping:
+				self.character.jump()
+			self.character.tick(self.platforms)
 			if self.dx != 0:
-				self.character.move(self.dx)
+				self.character.move(self.dx, self.platforms)
 
 		# draw the platforms
 		for platform in self.platforms:
@@ -73,9 +76,13 @@ class GameSurface(object):
 			self.dx += 1
 		elif key == K_LEFT:
 			self.dx -= 1
+		elif key == K_UP:
+			self.jumping = True
 
 	def key_up(self, key):
 		if key == K_RIGHT:
 			self.dx -= 1
 		elif key == K_LEFT:
 			self.dx += 1
+		elif key == K_UP:
+			self.jumping = False
