@@ -10,7 +10,7 @@ class Character(object):
 
 	STANDING, WALKING = range(2)
 	SPEED = 1
-	DEBUG = True
+	DEBUG = False
 	MAX_FALLING = 2
 	V_FALLING = 0.1
 
@@ -18,24 +18,26 @@ class Character(object):
 		self._state = state
 		self._is_falling = False
 		self._dy = 0
+		self._left = False
 		if walk_animation is None or stand_animation is None:
 			animation_manager = AnimationManager.MANAGER
 			animation = animation_manager.animations["animations.xml"]
 			if walk_animation is None:
-				walk_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["charMov"])
+				#walk_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["charMov"])
+				walk_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["dudeMov"], True)
 			if stand_animation is None:
-				stand_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["charStill"])
+				stand_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["dudeStill"], True)
 		self._walk_animation = walk_animation
 		self._stand_animation = stand_animation
 
-		self._collision_rect = Rect(pos[0],pos[1],48,74)
-		self._walking_line = Rect(pos[0],pos[1]+74,48,1)
+		self._collision_rect = Rect(pos[0],pos[1],28,49)
+		self._walking_line = Rect(pos[0],pos[1]+49,28,1)
 
 	def draw(self, surface, tick):
 		if self._state == Character.STANDING:
-			self._stand_animation.draw(surface, self._collision_rect.x, self._collision_rect.y, tick)
+			self._stand_animation.draw(surface, self._collision_rect.x, self._collision_rect.y, tick, self._left)
 		elif self._state == Character.WALKING:
-			self._walk_animation.draw(surface, self._collision_rect.x, self._collision_rect.y, tick)
+			self._walk_animation.draw(surface, self._collision_rect.x, self._collision_rect.y, tick, self._left)
 		if Character.DEBUG:
 			pygame.draw.rect(surface, (255,255,255), self._collision_rect, 1)
 			pygame.draw.rect(surface, (255,255,255), self._walking_line, 1)
@@ -49,18 +51,22 @@ class Character(object):
 			self._dy = 0
 		self._collision_rect = self._collision_rect.move(0, self._dy)
 		self._walking_line = self._walking_line.move(0, self._dy)
-		coliding = None
+		colliding = None
 		for platform in platforms:
 			if platform.collides(self._collision_rect):
-				coliding = platform
+				colliding = platform
 				break
-		if coliding is not None:
+		if colliding is not None:
 			while platform.collides(self._collision_rect):
 				self._collision_rect = self._collision_rect.move(0, -self._dy*0.5)
 				self._walking_line = self._walking_line.move(0, -self._dy*0.5)
 
 
 	def move(self, dx, platforms):
+		if dx < 0:
+			self._left = True
+		elif dx > 0:
+			self._left = False
 		self._collision_rect = self._collision_rect.move(dx * Character.SPEED, 0)
 		self._walking_line = self._walking_line.move(dx * Character.SPEED, 0)
 		self._state = Character.WALKING

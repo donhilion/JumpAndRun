@@ -4,9 +4,12 @@ class Animated(object):
 	'''
 	'''
 
-	def __init__(self, picture_manager, frame_list, animation):
+	def __init__(self, picture_manager, frame_list, animation, two_sided=False):
 		frames = {}
 		self.animation = []
+		self.mirrored = None
+		if two_sided:
+			self.mirrored = []
 		self.max_frame_count = 0
 
 		for frame_key in frame_list:
@@ -23,10 +26,15 @@ class Animated(object):
 			count = int(part[1])
 			self.max_frame_count += count
 			self.animation.append((count, frame))
+			if two_sided:
+				self.mirrored.append((count, pygame.transform.flip(frame, True, False)))
 
-	def draw(self, surface, x, y, count):
+	def draw(self, surface, x, y, count, flipped=False):
 		count %= self.max_frame_count
-		for part in self.animation:
+		list = self.animation
+		if flipped and self.mirrored is not None:
+			list = self.mirrored
+		for part in list:
 			if count > part[0]:
 				count -= part[0]
 			else:

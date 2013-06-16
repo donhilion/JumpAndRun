@@ -81,6 +81,86 @@
             <right>19</right>
             <bottom>19</bottom>
         </frame>
+        <frame>
+            <name>dudeMov1</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>0</left>
+            <top>0</top>
+            <right>28</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov2</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>28</left>
+            <top>0</top>
+            <right>56</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov3</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>56</left>
+            <top>0</top>
+            <right>84</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov4</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>84</left>
+            <top>0</top>
+            <right>112</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov5</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>112</left>
+            <top>0</top>
+            <right>140</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov6</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>140</left>
+            <top>0</top>
+            <right>168</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov7</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>168</left>
+            <top>0</top>
+            <right>196</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov8</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>196</left>
+            <top>0</top>
+            <right>224</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeMov9</name>
+            <picture>DudeWalking_0.png</picture>
+            <left>224</left>
+            <top>0</top>
+            <right>252</right>
+            <bottom>49</bottom>
+        </frame>
+        <frame>
+            <name>dudeStill</name>
+            <picture>DudeLookingUp.png</picture>
+            <left>9</left>
+            <top>7</top>
+            <right>37</right>
+            <bottom>56</bottom>
+        </frame>
     </frames>
     <animations>
         <animation>
@@ -118,6 +198,52 @@
             <part>
                 <duration>20</duration>
                 <frame>charMov2</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>dudeMov</name>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov1</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov2</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov3</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov4</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov5</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov6</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov7</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov8</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>dudeMov9</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>dudeStill</name>
+            <part>
+                <duration>1</duration>
+                <frame>dudeStill</frame>
             </part>
         </animation>
     </animations>

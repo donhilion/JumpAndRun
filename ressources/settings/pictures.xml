@@ -22,5 +22,13 @@
             <key type="str">platform</key>
             <value type="str">platform.png</value>
         </entry>
+        <entry>
+            <key type="str">dudeWalking</key>
+            <value type="str">DudeWalking_0.png</value>
+        </entry>
+        <entry>
+            <key type="str">dudeLooking</key>
+            <value type="str">DudeLookingUp.png</value>
+        </entry>
     </list>
 </dictionary>
