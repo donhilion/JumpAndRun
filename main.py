@@ -5,6 +5,9 @@ Created on 10.07.2012
 '''
 
 import logging
+import pygame
+from graphics.loading_window import LoadingWindow
+from graphics.window import Window
 
 
 # TODOs
@@ -15,4 +18,9 @@ import logging
 # Logic
 
 if __name__ == '__main__':
-	pass
+	pygame.init()
+	window = LoadingWindow()
+	window.load()
+
+	window = Window()
+	window.start()

@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import logging
+from graphics.game_over import GameOver
 
 from ressources.settings.settings_manager import SettingsManager
 from menu import Menu
@@ -10,7 +11,7 @@ class Window(object):
 	''' The main window.
 	'''
 
-	MENU, GAME = range(2)
+	MENU, GAME, GAME_OVER = range(3)
 
 	def __init__(self):
 		self.settings_manager = SettingsManager.MANAGER
@@ -32,9 +33,11 @@ class Window(object):
 		self.screen = pygame.display.set_mode((self.width, self.height), 0, 32)
 		self.menu = Menu(self.screen, self.width, self.height, self)
 		self.game = GameSurface(self.screen, self.width, self.height, self)
+		self.game_over = GameOver(self.screen, self.width, self.height, self)
 		self.current_display = self.menu
 
 	def start(self):
+		last_update = pygame.time.get_ticks()
 		while True:
 			for event in pygame.event.get():
 				if event.type == QUIT:
@@ -45,8 +48,15 @@ class Window(object):
 					self.current_display.key_up(event.key)
 
 			self.current_display.draw()
-
 			pygame.display.update()
+
+			current_update = pygame.time.get_ticks()
+			delta = current_update - last_update
+			last_update = current_update
+
+			if delta < 16: # 16 for 60 fps
+				pygame.time.wait(16-delta)
+
 
 	def switch(self, type):
 		if type == Window.MENU:
@@ -54,3 +64,6 @@ class Window(object):
 		elif type == Window.GAME:
 			self.current_display = self.game
 			self.game.reset_tick()
+		elif type == Window.GAME_OVER:
+			self.current_display = self.game_over
+			self.game = GameSurface(self.screen, self.width, self.height, self) # reset game

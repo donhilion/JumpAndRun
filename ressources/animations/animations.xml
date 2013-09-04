@@ -161,6 +161,62 @@
             <right>37</right>
             <bottom>56</bottom>
         </frame>
+        <frame>
+            <name>dudeJump1</name>
+            <picture>DudeJumping.png</picture>
+            <left>0</left>
+            <top>8</top>
+            <right>28</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump2</name>
+            <picture>DudeJumping.png</picture>
+            <left>28</left>
+            <top>9</top>
+            <right>56</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump3</name>
+            <picture>DudeJumping.png</picture>
+            <left>56</left>
+            <top>10</top>
+            <right>84</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump4</name>
+            <picture>DudeJumping.png</picture>
+            <left>84</left>
+            <top>9</top>
+            <right>112</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump5</name>
+            <picture>DudeJumping.png</picture>
+            <left>112</left>
+            <top>8</top>
+            <right>140</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump6</name>
+            <picture>DudeJumping.png</picture>
+            <left>140</left>
+            <top>7</top>
+            <right>168</right>
+            <bottom>57</bottom>
+        </frame>
+        <frame>
+            <name>dudeJump7</name>
+            <picture>DudeJumping.png</picture>
+            <left>168</left>
+            <top>6</top>
+            <right>196</right>
+            <bottom>57</bottom>
+        </frame>
     </frames>
     <animations>
         <animation>
@@ -244,6 +300,13 @@
             <part>
                 <duration>1</duration>
                 <frame>dudeStill</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>dudeJump</name>
+            <part>
+                <duration>1</duration>
+                <frame>dudeJump7</frame>
             </part>
         </animation>
     </animations>
