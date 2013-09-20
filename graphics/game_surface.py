@@ -3,6 +3,7 @@ from pygame.locals import *
 from game_objects.character import Character
 from game_objects.platform import Platform
 from game_objects.collectable import Collectable
+from ressources.levels.level_manager import LevelManager
 
 from ressources.pictures.picture_manager import PictureManager
 import window
@@ -11,7 +12,7 @@ class GameSurface(object):
 	'''
 	'''
 
-	def __init__(self, screen, width, height, window):
+	def __init__(self, screen, width, height, window, level="level0"):
 		self.screen = screen
 		self.width = width
 		self.height = height
@@ -26,26 +27,27 @@ class GameSurface(object):
 		self.jumping = False
 		self.font = pygame.font.SysFont("arial", 24)
 
-		self.character = Character()
-		self.platforms = []
-		self.platforms.append(Platform((0, 200), (500, 50)))
+		self.level = LevelManager.MANAGER.levels[level]
 
-		self.collectables = []
-		self.collectables.append(Collectable((50,150), (10,10)))
-		self.collectables.append(Collectable((150,150), (10,10)))
-		self.collectables.append(Collectable((200,150), (10,10)))
-		self.collectables.append(Collectable((250,150), (10,10)))
+		self.character = Character(pos=self.level.get_start())
+		self.platforms = self.level.get_platforms()
 
-		self.deadzone = Rect((-1000, self.height), (300000, 1))
+		self.collectables = self.level.get_collectables()
+
+		deadzone = self.level.get_deadzone()
+		self.deadzone = Rect((deadzone[0], deadzone[1]), (deadzone[2], deadzone[3]))
 
 	def reset_tick(self):
 		self.last_ticks = pygame.time.get_ticks()
 
 	def draw(self):
-		x = -(self.camera[0] % self.height)
-		while x < self.width:
-			self.screen.blit(self.bg, (x,0))
-			x += self.height
+		y = -(self.camera[1] % self.height)
+		while y < self.height:
+			x = -(self.camera[0] % self.height)
+			while x < self.width:
+				self.screen.blit(self.bg, (x,y))
+				x += self.height
+			y += self.height
 
 		tick = self.tick / 10
 
@@ -75,6 +77,7 @@ class GameSurface(object):
 
 		# center camera around player
 		self.camera[0] = self.character.get_x() - self.width / 2
+		self.camera[1] = self.character.get_y() - self.height / 2
 
 		# draw the platforms
 		for platform in self.platforms:

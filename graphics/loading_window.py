@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from ressources.levels.level_manager import LevelManager
 
 from ressources.pictures.picture_manager import PictureManager
 from ressources.settings.settings_manager import SettingsManager
@@ -13,6 +14,7 @@ class LoadingWindow(object):
 	PICTURES_FILE = "pictures.xml"
 	SETTINGS_FILES = ("graphics.xml", PICTURES_FILE)
 	ANIMATIONS_FILES = ("animations.xml",)
+	LEVELS_FILES = ("level0",)
 
 	INTEND = "    "
 
@@ -50,6 +52,12 @@ class LoadingWindow(object):
 		for file_name in LoadingWindow.ANIMATIONS_FILES:
 			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
 			results.append(self.animation_manager.load_animation(file_name))
+
+		infos.append("Star loading levels")
+		self.level_manager = LevelManager()
+		for file_name in LoadingWindow.LEVELS_FILES:
+			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
+			results.append(self.level_manager.load_level(file_name))
 
 		while running:
 			for event in pygame.event.get():

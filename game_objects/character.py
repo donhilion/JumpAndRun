@@ -35,6 +35,7 @@ class Character(object):
 
 		self._collision_rect = Rect(pos[0],pos[1],28,49)
 		self._walking_line = Rect(pos[0],pos[1]+49,28,1)
+		self._head_line = Rect(pos[0], pos[1]-1, 28, 1)
 
 	def draw(self, surface, tick, camera, size):
 		if self._state == Character.STANDING:
@@ -46,6 +47,7 @@ class Character(object):
 		if Character.DEBUG:
 			pygame.draw.rect(surface, (255,255,255), self._collision_rect, 1)
 			pygame.draw.rect(surface, (255,255,255), self._walking_line, 1)
+			pygame.draw.rect(surface, (255,255,255), self._head_line, 1)
 
 	def tick(self, platforms, collectables):
 		self._state = Character.STANDING
@@ -57,6 +59,7 @@ class Character(object):
 			self._dy = 0
 		self._collision_rect = self._collision_rect.move(0, self._dy)
 		self._walking_line = self._walking_line.move(0, self._dy)
+		self._head_line = self._head_line.move(0, self._dy)
 		colliding = None
 		for platform in platforms:
 			if platform.collides(self._collision_rect):
@@ -64,8 +67,14 @@ class Character(object):
 				break
 		if colliding is not None:
 			while platform.collides(self._collision_rect):
-				self._collision_rect = self._collision_rect.move(0, -self._dy*0.5)
-				self._walking_line = self._walking_line.move(0, -self._dy*0.5)
+				if platform.collides(self._walking_line):
+					direction = -1.0
+				else:
+					direction = 1.0
+				self._dy *= 0.5
+				self._collision_rect = self._collision_rect.move(0, direction)
+				self._walking_line = self._walking_line.move(0, direction)
+				self._head_line = self._head_line.move(0, direction)
 
 		for collectable in collectables:
 			if collectable.collides(self._collision_rect):
@@ -80,12 +89,14 @@ class Character(object):
 			self._left = False
 		self._collision_rect = self._collision_rect.move(dx * Character.SPEED, 0)
 		self._walking_line = self._walking_line.move(dx * Character.SPEED, 0)
+		self._head_line = self._head_line.move(dx * Character.SPEED, 0)
 		if self._state is not Character.JUMPING:
 			self._state = Character.WALKING
 		for platform in platforms:
 			if platform.collides(self._collision_rect):
 				self._collision_rect = self._collision_rect.move(-dx * Character.SPEED, 0)
 				self._walking_line = self._walking_line.move(-dx * Character.SPEED, 0)
+				self._head_line = self._head_line.move(-dx * Character.SPEED, 0)
 				break
 
 	def jump(self):
@@ -100,3 +111,6 @@ class Character(object):
 
 	def get_x(self):
 		return self._collision_rect.x + 14
+
+	def get_y(self):
+		return self._collision_rect.y + 25
