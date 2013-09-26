@@ -23,21 +23,16 @@
             <value type="str">platform.png</value>
         </entry>
         <entry>
-            <key type="str">dudeWalking</key>
-            <value type="str">DudeWalking_0.png</value>
+            <key type="str">goal</key>
+            <value type="str">goal.png</value>
         </entry>
         <entry>
-            <key type="str">dudeLooking</key>
-            <value type="str">DudeLookingUp.png</value>
+            <key type="str">monster</key>
+            <value type="str">monster.png</value>
         </entry>
         <entry>
-            <key type="str">dudeJumping</key>
-            <value type="str">DudeJumping.png</value>
-        </entry>
-
-        <entry>
-            <key type="str">bg2</key>
-            <value type="str">bg2.png</value>
+            <key type="str">Hero</key>
+            <value type="str">Hero.png</value>
         </entry>
     </list>
 </dictionary>

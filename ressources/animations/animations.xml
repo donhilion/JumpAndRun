@@ -82,140 +82,44 @@
             <bottom>19</bottom>
         </frame>
         <frame>
-            <name>dudeMov1</name>
-            <picture>DudeWalking_0.png</picture>
+            <name>HeroStand</name>
+            <picture>Hero.png</picture>
             <left>0</left>
             <top>0</top>
-            <right>28</right>
-            <bottom>49</bottom>
+            <right>27</right>
+            <bottom>48</bottom>
         </frame>
         <frame>
-            <name>dudeMov2</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>28</left>
-            <top>0</top>
-            <right>56</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov3</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>56</left>
-            <top>0</top>
-            <right>84</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov4</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>84</left>
-            <top>0</top>
-            <right>112</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov5</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>112</left>
-            <top>0</top>
-            <right>140</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov6</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>140</left>
-            <top>0</top>
-            <right>168</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov7</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>168</left>
-            <top>0</top>
-            <right>196</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov8</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>196</left>
-            <top>0</top>
-            <right>224</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeMov9</name>
-            <picture>DudeWalking_0.png</picture>
-            <left>224</left>
-            <top>0</top>
-            <right>252</right>
-            <bottom>49</bottom>
-        </frame>
-        <frame>
-            <name>dudeStill</name>
-            <picture>DudeLookingUp.png</picture>
-            <left>9</left>
-            <top>7</top>
-            <right>37</right>
-            <bottom>56</bottom>
-        </frame>
-        <frame>
-            <name>dudeJump1</name>
-            <picture>DudeJumping.png</picture>
+            <name>HeroWalk0</name>
+            <picture>Hero.png</picture>
             <left>0</left>
-            <top>8</top>
-            <right>28</right>
-            <bottom>57</bottom>
+            <top>48</top>
+            <right>27</right>
+            <bottom>96</bottom>
         </frame>
         <frame>
-            <name>dudeJump2</name>
-            <picture>DudeJumping.png</picture>
-            <left>28</left>
-            <top>9</top>
-            <right>56</right>
-            <bottom>57</bottom>
+            <name>HeroWalk1</name>
+            <picture>Hero.png</picture>
+            <left>0</left>
+            <top>96</top>
+            <right>27</right>
+            <bottom>144</bottom>
         </frame>
         <frame>
-            <name>dudeJump3</name>
-            <picture>DudeJumping.png</picture>
-            <left>56</left>
-            <top>10</top>
-            <right>84</right>
-            <bottom>57</bottom>
+            <name>HeroWalk2</name>
+            <picture>Hero.png</picture>
+            <left>0</left>
+            <top>144</top>
+            <right>27</right>
+            <bottom>192</bottom>
         </frame>
         <frame>
-            <name>dudeJump4</name>
-            <picture>DudeJumping.png</picture>
-            <left>84</left>
-            <top>9</top>
-            <right>112</right>
-            <bottom>57</bottom>
-        </frame>
-        <frame>
-            <name>dudeJump5</name>
-            <picture>DudeJumping.png</picture>
-            <left>112</left>
-            <top>8</top>
-            <right>140</right>
-            <bottom>57</bottom>
-        </frame>
-        <frame>
-            <name>dudeJump6</name>
-            <picture>DudeJumping.png</picture>
-            <left>140</left>
-            <top>7</top>
-            <right>168</right>
-            <bottom>57</bottom>
-        </frame>
-        <frame>
-            <name>dudeJump7</name>
-            <picture>DudeJumping.png</picture>
-            <left>168</left>
-            <top>6</top>
-            <right>196</right>
-            <bottom>57</bottom>
+            <name>HeroJump</name>
+            <picture>Hero.png</picture>
+            <left>0</left>
+            <top>192</top>
+            <right>27</right>
+            <bottom>240</bottom>
         </frame>
     </frames>
     <animations>
@@ -307,6 +211,46 @@
             <part>
                 <duration>1</duration>
                 <frame>dudeJump7</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>HeroStand</name>
+            <part>
+                <duration>1</duration>
+                <frame>HeroStand</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>HeroWalk</name>
+            <part>
+                <duration>15</duration>
+                <frame>HeroWalk0</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>HeroWalk1</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>HeroWalk2</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>HeroWalk1</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>HeroJump</name>
+            <part>
+                <duration>1</duration>
+                <frame>HeroJump</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>HeroJumpRight</name>
+            <part>
+                <duration>1</duration>
+                <frame>HeroWalk0</frame>
             </part>
         </animation>
     </animations>
