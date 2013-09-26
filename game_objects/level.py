@@ -6,11 +6,12 @@ __author__ = 'Donhilion'
 
 class Level(object):
 
-	def __init__(self, jsonString=None, platforms=None, collectables=None, start = (0,0), deadzone = (0,0)):
+	def __init__(self, jsonString=None, platforms=None, collectables=None, start = (0,0), deadzone = (0,0,0,0), goal=(0,0)):
 		if jsonString is not None:
 			jsonMap = json.loads(jsonString)
 			start = jsonMap["start"]
 			deadzone = jsonMap["deadzone"]
+			goal = jsonMap["goal"]
 			platforms = []
 			for platform in jsonMap["platforms"]:
 				x = platform["x"]
@@ -31,6 +32,7 @@ class Level(object):
 		self._deadzone = deadzone
 		self._platforms = platforms
 		self._collectables = collectables
+		self._goal = goal
 
 	def get_platforms(self):
 		return self._platforms
@@ -43,3 +45,6 @@ class Level(object):
 
 	def get_deadzone(self):
 		return self._deadzone
+
+	def get_goal(self):
+		return self._goal
