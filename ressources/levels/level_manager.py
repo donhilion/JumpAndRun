@@ -25,7 +25,7 @@ class LevelManager(object):
 			logging.debug("Begin loading level " + wrapper.name)
 			with open('ressources/levels/' + wrapper.name + '.json', 'r') as f:
 				s = f.read()
-			level = Level(jsonString=s)
+			level = Level(json_string=s)
 
 			self.lock.acquire()
 			self.levels[wrapper.name] = level

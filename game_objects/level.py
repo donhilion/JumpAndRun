@@ -4,31 +4,59 @@ from platform import Platform
 
 __author__ = 'Donhilion'
 
-class Level(object):
 
-	def __init__(self, jsonString=None, platforms=None, collectables=None, enemies=None, start = (0,0), deadzone = (0,0,0,0), goal=(0,0)):
-		if jsonString is not None:
-			jsonMap = json.loads(jsonString)
-			start = jsonMap["start"]
-			deadzone = jsonMap["deadzone"]
-			goal = jsonMap["goal"]
+class Level(object):
+	""" The level class.
+
+	An instance of this class represents a level for the game.
+
+	Attributes:
+		_start: The start position for the character.
+		_deadzone: The area the character dies in.
+		_platforms: The platforms of this level.
+		_collectables: The collectables of this level.
+		_enemies: The enemies of this level.
+		_goal: The goal position of this level.
+	"""
+
+	def __init__(self, json_string=None, platforms=None, collectables=None, enemies=None, start=(0, 0),
+				 deadzone=(0, 0, 0, 0), goal=(0, 0)):
+		""" Generates a new instance of this class.
+
+		Generates a new instance of this class and sets the field information.
+		If the jsonString is set, it is used to set these information. Otherwise the other parameters will be used.
+
+		Args:
+			json_string: The json string containing the level information.
+			platforms: A list of platforms for this level.
+			collectables: A list of collectables for this level.
+			enemies: A list of enemies for this level.
+			start: The start position for this level.
+			deadzone: The dead zone area for this level.
+			goal: The goal position for this level.
+		"""
+		if json_string is not None:
+			json_map = json.loads(json_string)
+			start = json_map["start"]
+			deadzone = json_map["deadzone"]
+			goal = json_map["goal"]
 			platforms = []
-			for platform in jsonMap["platforms"]:
+			for platform in json_map["platforms"]:
 				x = platform["x"]
 				y = platform["y"]
 				w = platform["w"]
 				h = platform["h"]
-				platforms.append(Platform((x,y), (w,h)))
+				platforms.append(Platform((x, y), (w, h)))
 			collectables = []
-			for collectable in jsonMap["collectables"]:
+			for collectable in json_map["collectables"]:
 				x = collectable["x"]
 				y = collectable["y"]
-				collectables.append((x,y))
+				collectables.append((x, y))
 			enemies = []
-			for enemy in jsonMap["enemies"]:
+			for enemy in json_map["enemies"]:
 				x = enemy["x"]
 				y = enemy["y"]
-				enemies.append(Enemy([x,y]))
+				enemies.append(Enemy([x, y]))
 		if platforms is None:
 			platforms = []
 		if collectables is None:
@@ -43,19 +71,61 @@ class Level(object):
 		self._goal = goal
 
 	def get_platforms(self):
+		""" Returns the platforms.
+
+		This method returns the list of platforms of this level.
+
+		Returns:
+			The list of platforms.
+		"""
 		return self._platforms
 
 	def get_collectables(self):
+		""" Returns the collectables.
+
+		This method returns the list of collectables of this level.
+
+		Returns:
+			The list of collectables.
+		"""
 		return self._collectables
 
 	def get_enemies(self):
+		""" Returns the enemies.
+
+		This method returns the list of enemies of this level.
+
+		Returns:
+			The list of enemies.
+		"""
 		return self._enemies
 
 	def get_start(self):
+		""" Returns the start.
+
+		This method returns the start position of this level.
+
+		Returns:
+			The start position.
+		"""
 		return self._start
 
 	def get_deadzone(self):
+		""" Returns the dead zone.
+
+		This method returns the dead zone area of this level.
+
+		Returns:
+			The dead zone area.
+		"""
 		return self._deadzone
 
 	def get_goal(self):
+		""" Returns the goal.
+
+		This methods returns the goal position of this level.
+
+		Returns:
+			The goal position.
+		"""
 		return self._goal
