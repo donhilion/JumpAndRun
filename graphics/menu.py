@@ -16,7 +16,7 @@ class Menu(object):
 	'''
 
 	ENTRIES = (MenuEntry("Start", None), MenuEntry("Options", None),
-		MenuEntry("Ende", exit))
+		MenuEntry("Ende", quit))
 
 	def __init__(self, screen, width, height, window):
 		self.screen = screen

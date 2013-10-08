@@ -23,8 +23,8 @@ class LevelManager(object):
 	def load_level_asynchroniously(self, wrapper):
 		try:
 			logging.debug("Begin loading level " + wrapper.name)
-			f = open("ressources/levels/" + wrapper.name + ".json", "r")
-			s = f.read()
+			with open('ressources/levels/' + wrapper.name + '.json', 'r') as f:
+				s = f.read()
 			level = Level(jsonString=s)
 
 			self.lock.acquire()

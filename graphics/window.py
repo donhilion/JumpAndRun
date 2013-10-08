@@ -19,9 +19,9 @@ class Window(object):
 		if self.settings_manager is not None:
 			try:
 				self.width = \
-					self.settings_manager.settings["graphics.xml"]["width"]
+					self.settings_manager.settings["graphics.json"]["width"]
 				self.height = \
-					self.settings_manager.settings["graphics.xml"]["height"]
+					self.settings_manager.settings["graphics.json"]["height"]
 			except Exception, e:
 				logging.error("Error while get window size")
 				logging.error(e)
@@ -66,6 +66,7 @@ class Window(object):
 		elif type == Window.GAME:
 			self.current_display = self.game
 			self.game.reset_tick()
+			self.game.start_music()
 		elif type == Window.GAME_OVER:
 			self.current_display = self.game_over
 			self.game = GameSurface(self.screen, self.width, self.height, self) # reset game

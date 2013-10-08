@@ -3,6 +3,7 @@ from ressources.animations.animation_manager import AnimationManager
 from ressources.pictures.picture_manager import PictureManager
 from pygame import Rect
 import pygame
+from ressources.sounds.sound_manager import SoundManager
 
 __author__ = 'donhilion'
 
@@ -31,10 +32,10 @@ class Character(object):
 				walk_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroWalk"], True)
 			if stand_animation is None:
 				#stand_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["dudeStill"], True)
-				stand_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroStand"], True)
+				stand_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroStand"])
 			if jump_animation is None:
 				#jump_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["dudeJump"], True)
-				jump_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroJump"], True)
+				jump_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroJump"])
 			if jump_right_animation is None:
 				jump_right_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroJumpRight"], True)
 		self._walk_animation = walk_animation
@@ -46,14 +47,16 @@ class Character(object):
 		self._walking_line = Rect(pos[0],pos[1]+48,27,1)
 		self._head_line = Rect(pos[0], pos[1]-1, 27, 1)
 
+		self.collect_sound = SoundManager.MANAGER.loaded["coin.wav"]
+
 	def draw(self, surface, tick, camera, size):
 		if self._state == Character.STANDING:
-			self._stand_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick, self._direction == Character.LEFT)
+			self._stand_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick)
 		elif self._state == Character.WALKING:
 			self._walk_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick, self._direction == Character.LEFT)
 		elif self._state == Character.JUMPING:
 			if self._direction == Character.NONE:
-				self._jump_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick, self._direction == Character.LEFT)
+				self._jump_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick)
 			else:
 				self._jump_right_animation.draw(surface, self._collision_rect.x - camera[0], self._collision_rect.y - camera[1], tick, self._direction == Character.LEFT)
 		if Character.DEBUG:
@@ -95,6 +98,7 @@ class Character(object):
 			if collectable.collides(self._collision_rect):
 				self._points += collectable.get_value()
 				collectables.remove(collectable)
+				self.collect_sound.play()
 
 
 	def move(self, dx, platforms):

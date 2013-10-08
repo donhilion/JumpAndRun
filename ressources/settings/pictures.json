@@ -1,0 +1,46 @@
+[
+    {
+        "key": "bg1",
+        "value": "sparksis.png"
+    },
+    {
+        "key": "menu",
+        "value": "menuBackground.png"
+    },
+    {
+        "key": "animationTest",
+        "value": "animationTest.png"
+    },
+    {
+        "key": "char",
+        "value": "char.png"
+    },
+    {
+        "key": "platform",
+        "value": "platform.png"
+    },
+    {
+        "key": "goal",
+        "value": "goal.png"
+    },
+    {
+        "key": "monster",
+        "value": "monster.png"
+    },
+    {
+        "key": "Hero",
+        "value": "Hero.png"
+    },
+    {
+        "key": "Heart",
+        "value": "Heart.png"
+    },
+    {
+        "key": "Coin",
+        "value": "Coin.png"
+    },
+    {
+        "key": "Grass",
+        "value": "grass.png"
+    }
+]

@@ -12,7 +12,7 @@ resized_bg = pygame.transform.scale(bg, (100,100))
 
 running = True
 
-while(running):
+while running:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			print("The end")

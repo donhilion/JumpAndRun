@@ -121,6 +121,70 @@
             <right>27</right>
             <bottom>240</bottom>
         </frame>
+        <frame>
+            <name>Monster</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>0</top>
+            <right>30</right>
+            <bottom>30</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode0</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>58</top>
+            <right>58</right>
+            <bottom>116</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode1</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>116</top>
+            <right>58</right>
+            <bottom>174</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode2</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>174</top>
+            <right>58</right>
+            <bottom>232</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode3</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>232</top>
+            <right>58</right>
+            <bottom>290</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode4</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>290</top>
+            <right>58</right>
+            <bottom>348</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode5</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>348</top>
+            <right>58</right>
+            <bottom>406</bottom>
+        </frame>
+        <frame>
+            <name>MonsterExplode6</name>
+            <picture>monster.png</picture>
+            <left>0</left>
+            <top>406</top>
+            <right>58</right>
+            <bottom>464</bottom>
+        </frame>
     </frames>
     <animations>
         <animation>
@@ -251,6 +315,44 @@
             <part>
                 <duration>1</duration>
                 <frame>HeroWalk0</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>Monster</name>
+            <part>
+                <duration>1</duration>
+                <frame>Monster</frame>
+            </part>
+        </animation>
+        <animation>
+            <name>MonsterExplode</name>
+            <part>
+                <duration>10</duration>
+                <frame>MonsterExplode0</frame>
+            </part>
+            <part>
+                <duration>15</duration>
+                <frame>MonsterExplode1</frame>
+            </part>
+            <part>
+                <duration>10</duration>
+                <frame>MonsterExplode2</frame>
+            </part>
+            <part>
+                <duration>10</duration>
+                <frame>MonsterExplode3</frame>
+            </part>
+            <part>
+                <duration>10</duration>
+                <frame>MonsterExplode4</frame>
+            </part>
+            <part>
+                <duration>10</duration>
+                <frame>MonsterExplode5</frame>
+            </part>
+            <part>
+                <duration>20</duration>
+                <frame>MonsterExplode6</frame>
             </part>
         </animation>
     </animations>

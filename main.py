@@ -18,6 +18,7 @@ from graphics.window import Window
 # Logic
 
 if __name__ == '__main__':
+	pygame.mixer.pre_init(44100, -16, 2, 2048)
 	pygame.init()
 	window = LoadingWindow()
 	window.load()
