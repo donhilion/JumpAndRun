@@ -34,5 +34,13 @@
             <key type="str">Hero</key>
             <value type="str">Hero.png</value>
         </entry>
+        <entry>
+            <key type="str">Heart</key>
+            <value type="str">Heart.png</value>
+        </entry>
+        <entry>
+            <key type="str">Coin</key>
+            <value type="str">Coin.png</value>
+        </entry>
     </list>
 </dictionary>
