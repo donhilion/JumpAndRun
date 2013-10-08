@@ -1,40 +1,70 @@
 import pygame
 
+__author__ = 'Donhilion'
+
+
 class Animated(object):
-	'''
-	'''
+	""" The animated class.
+
+	An instance of this class represents an animated object.
+
+	Attributes:
+		_animations: The list of pictures of this animation with the duration.
+		_mirrored: If the animated object is two sided this is a list of mirrored pictures similar to _animations.
+		_max_frame_count: Contains the complete number of frames for one animation cycle.
+	"""
 
 	def __init__(self, picture_manager, frame_list, animation, two_sided=False):
+		""" Generates a new instance of this class.
+
+		Generates a new instance of this class and sets the field information.
+
+		Args:
+			picture_manager: The instance of the picture manager to use.
+			frame_list: The list of frames.
+			animation: The animation dictionary.
+			two_sided: Determines if the animated object has two sides.
+		"""
 		frames = {}
-		self.animation = []
-		self.mirrored = None
+		self._animation = []
+		self._mirrored = None
 		if two_sided:
-			self.mirrored = []
-		self.max_frame_count = 0
+			self._mirrored = []
+		self._max_frame_count = 0
 
 		for frame_key in frame_list:
 			frame = frame_list[frame_key]
 			picture = picture_manager.loaded[frame[0]]
 			rect = pygame.Rect(float(frame[1]), float(frame[2]),
-				float(frame[3]) - float(frame[1]),
-				float(frame[4]) - float(frame[2]))
+							   float(frame[3]) - float(frame[1]),
+							   float(frame[4]) - float(frame[2]))
 			part = picture.subsurface(rect)
 			frames[frame_key] = part
 
 		for part in animation:
 			frame = frames[part[0]]
 			count = int(part[1])
-			self.max_frame_count += count
-			self.animation.append((count, frame))
+			self._max_frame_count += count
+			self._animation.append((count, frame))
 			if two_sided:
-				self.mirrored.append((count, pygame.transform.flip(frame, True, False)))
+				self._mirrored.append((count, pygame.transform.flip(frame, True, False)))
 
 	def draw(self, surface, x, y, count, flipped=False):
-		count %= self.max_frame_count
-		list = self.animation
-		if flipped and self.mirrored is not None:
-			list = self.mirrored
-		for part in list:
+		""" Draws this animated object.
+
+		This method draws the animated object on the given surface.
+
+		Args:
+			surface: The surface to draw on.
+			x: The x coordinate.
+			y: The y coordinate.
+			count: The current tick of the game.
+		"""
+		count %= self._max_frame_count
+		animation_list = self._animation
+		if flipped and self._mirrored is not None:
+			animation_list = self._mirrored
+		for part in animation_list:
 			if count > part[0]:
 				count -= part[0]
 			else:
