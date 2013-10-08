@@ -1,8 +1,10 @@
+from pygame import Surface, Rect
+
 from ressources.pictures.picture_manager import PictureManager
+
 
 __author__ = 'Donhilion'
 
-from pygame import Surface, Rect
 
 class Platform(object):
 	""" The platform class.
@@ -16,7 +18,7 @@ class Platform(object):
 		_rect: The rectangle for collision detection.
 	"""
 
-	def __init__(self, pos = (0, 0), size = (10,10), picture = None):
+	def __init__(self, pos=(0, 0), size=(10, 10), picture=None):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of this class and sets the field information.
@@ -38,7 +40,7 @@ class Platform(object):
 		pic_h = picture.get_height()
 		while x < size[0]:
 			while y < size[1]:
-				self._surface.blit(picture, (x,y))
+				self._surface.blit(picture, (x, y))
 				y += pic_h
 			y = 0
 			x += pic_w
