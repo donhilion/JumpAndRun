@@ -8,168 +8,253 @@ from ressources.pictures.picture_manager import PictureManager
 from ressources.sounds.sound_manager import SoundManager
 import window
 
+__author__ = 'Donhilion'
+
 class GameSurface(object):
-	'''
-	'''
+	""" The game surface class.
+
+	An object of this class represents the game surface where a level will be shown and the character moves.
+
+	Attributes:
+		_screen: The screen surface to draw on.
+		_width: The width of the window.
+		_height: The height of the window.
+		_window: The surrounding window.
+		_camera: The position of the camera.
+		_bg: The background picture.
+		_bg_w: The width of the background picture.
+		_bg_h: The height of the background picture.
+		_heart: The picture of a heart for the live counter.
+		_coin: The picture of a coin for the point counter.
+		_tick: The tick counter of the game.
+		_last_ticks: The last tick provided by pygame.
+		_dx: The horizontal direction resulting from the keys pressed.
+		_jumping: Flag which determines if the jump button is pressed.
+		_font: The font used for displaying lives and points.
+		_level: The current level.
+		_character: The character of this game.
+		_platforms: The platforms of this game.
+		_collectables: The collectables of this game.
+		_goal: The goal of this game.
+		_goal_pic: The picture of the goal.
+		_deadzone: The deadzone of the game.
+		_enemies: The enemies of the game.
+		_animations: The current animations to display.
+		_jump_sound: The sound for the character jumping.
+		_bg_sound: The background music.
+	"""
+
+	# The name of the background picture file.
+	BG_PICTURE_NAME = "sparksis.png"
+	# The name of the heat picture file.
+	HEART_PICTURE_NAME = "Heart.png"
+	# The name of the coin picture file.
+	COIN_PICTURE_NAME = "Coin.png"
+	# The name of the goal picture file.
+	GOAL_PICTURE_NAME = "goal.png"
+	# The name of the jump sound file.
+	JUMP_SOUND_NAME = "jump.wav"
+	# The name of the background sound file.
+	BG_SOUND_NAME = "test.ogg"
 
 	def __init__(self, screen, width, height, window, level="level0"):
-		self.screen = screen
-		self.width = width
-		self.height = height
-		self.window = window
-		self.camera = [0,0]
-		#self.bg = PictureManager.MANAGER.loaded["background.png"]
-		#self.bg = PictureManager.MANAGER.loaded["bg2.png"]
-		self.bg = PictureManager.MANAGER.loaded["sparksis.png"]
-		self.bg_w = self.bg.get_width()
-		self.bg_h = self.bg.get_height()
-		self.heart = PictureManager.MANAGER.loaded["Heart.png"]
-		self.coin = PictureManager.MANAGER.loaded["Coin.png"]
-		self.tick = 0
-		self.last_ticks = pygame.time.get_ticks()
-		self.dx = 0
-		self.jumping = False
-		self.font = pygame.font.SysFont("arial", 24)
+		""" Generates a new instance of this class.
 
-		self.level = LevelManager.MANAGER.levels[level]
+		Generates a new instance of this class and sets the field information.
 
-		self.character = Character(pos=self.level.get_start())
-		self.platforms = self.level.get_platforms()
+		Args:
+			screen: The screen surface to draw on.
+			width: The width of the window.
+			height: The height of the window.
+			window: The surrounding window.
+			level: The name of the level which should be loaded.
+		"""
+		self._screen = screen
+		self._width = width
+		self._height = height
+		self._window = window
+		self._camera = [0,0]
+		self._bg = PictureManager.MANAGER.loaded[GameSurface.BG_PICTURE_NAME]
+		self._bg_w = self._bg.get_width()
+		self._bg_h = self._bg.get_height()
+		self._heart = PictureManager.MANAGER.loaded[GameSurface.HEART_PICTURE_NAME]
+		self._coin = PictureManager.MANAGER.loaded[GameSurface.COIN_PICTURE_NAME]
+		self._tick = 0
+		self._last_ticks = pygame.time.get_ticks()
+		self._dx = 0
+		self._jumping = False
+		self._font = pygame.font.SysFont("arial", 24)
 
-		collectables = self.level.get_collectables()
-		self.collectables = []
+		self._level = LevelManager.MANAGER.levels[level]
+
+		self._character = Character(pos=self._level.get_start())
+		self._platforms = self._level.get_platforms()
+
+		collectables = self._level.get_collectables()
+		self._collectables = []
 		for collectable in collectables:
-			self.collectables.append(Collectable(collectable, pic = self.coin))
+			self._collectables.append(Collectable(collectable, pic = self._coin))
 
-		goal = self.level.get_goal()
-		self.goal = Rect(goal, (50, 50))
-		self.goal_pic = PictureManager.MANAGER.loaded["goal.png"]
+		goal = self._level.get_goal()
+		self._goal = Rect(goal, (50, 50))
+		self._goal_pic = PictureManager.MANAGER.loaded[GameSurface.GOAL_PICTURE_NAME]
 
 
-		deadzone = self.level.get_deadzone()
-		self.deadzone = Rect(deadzone[:2], deadzone[2:])
+		deadzone = self._level.get_deadzone()
+		self._deadzone = Rect(deadzone[:2], deadzone[2:])
 
-		self.enemies = self.level.get_enemies()
-		self.animations = []
+		self._enemies = self._level.get_enemies()
+		self._animations = []
 
-		self.jump_sound = SoundManager.MANAGER.loaded["jump.wav"]
-		self.bg_sound = SoundManager.MANAGER.loaded["test.ogg"]
+		self._jump_sound = SoundManager.MANAGER.loaded[GameSurface.JUMP_SOUND_NAME]
+		self._bg_sound = SoundManager.MANAGER.loaded[GameSurface.BG_SOUND_NAME]
 
 	def reset_tick(self):
-		self.last_ticks = pygame.time.get_ticks()
+		""" Resets the ticks.
+
+		This method resets the ticks.
+		It should be called before the game is resumed after a pause.
+		"""
+		self._last_ticks = pygame.time.get_ticks()
 
 	def draw(self):
-		y = -(self.camera[1] % self.bg_h)
-		while y < self.bg_h:
-			x = -(self.camera[0] % self.bg_w)
-			while x < self.bg_w:
-				self.screen.blit(self.bg, (x,y))
-				x += self.bg_w
-			y += self.bg_h
+		""" Draws the game.
 
-		tick = self.tick / 10
+		This method draws the level and the character on the screen surface.
+		Before something is drawn, the changes in the game world will be calculated depending on the amount of ticks which have passed.
+		"""
+		y = -(self._camera[1] % self._bg_h)
+		while y < self._bg_h:
+			x = -(self._camera[0] % self._bg_w)
+			while x < self._bg_w:
+				self._screen.blit(self._bg, (x,y))
+				x += self._bg_w
+			y += self._bg_h
+
+		tick = self._tick / 10
 
 		# calculate the ticks
 		current_ticks = pygame.time.get_ticks()
-		delta = (current_ticks - self.last_ticks)
-		self.tick += delta
-		self.last_ticks = current_ticks
+		delta = (current_ticks - self._last_ticks)
+		self._tick += delta
+		self._last_ticks = current_ticks
 
 		# handle the ticks
-		for i in range(self.tick/10 - tick):
+		for i in range(self._tick/10 - tick):
 			# handle enemies
-			for enemy in self.enemies:
-				enemy.tick(self.platforms)
+			for enemy in self._enemies:
+				enemy.tick(self._platforms)
 
 			# check walking collision
 			standing = False
-			for platform in self.platforms:
-				if platform.collides(self.character._walking_line):
+			for platform in self._platforms:
+				if platform.collides(self._character._walking_line):
 					standing = True
 					break
-			self.character._is_falling = not standing
-			if standing and self.jumping:
-				self.character.jump()
-				self.jump_sound.play()
+			self._character._is_falling = not standing
+			if standing and self._jumping:
+				self._character.jump()
+				self._jump_sound.play()
 
-			if not self.character.is_invincible():
-				for enemy in self.enemies:
-					animation = enemy.collide(self.character)
+			if not self._character.is_invincible():
+				for enemy in self._enemies:
+					animation = enemy.collide(self._character)
 					if animation is not None:
-						self.enemies.remove(enemy)
-						self.animations.append(animation)
+						self._enemies.remove(enemy)
+						self._animations.append(animation)
 
-			self.character.tick(self.platforms, self.collectables)
-			if self.dx != 0:
-				self.character.move(self.dx, self.platforms)
+			self._character.tick(self._platforms, self._collectables)
+			if self._dx != 0:
+				self._character.move(self._dx, self._platforms)
 
-			if self.character.is_colliding(self.deadzone) or self.character.get_lives() < 1:
-				self.bg_sound.stop()
-				self.window.switch(window.Window.GAME_OVER)
+			if self._character.is_colliding(self._deadzone) or self._character.get_lives() < 1:
+				self._bg_sound.stop()
+				self._window.switch(window.Window.GAME_OVER)
 
-			if self.character.is_colliding(self.goal):
-				self.bg_sound.stop()
-				self.window.switch(window.Window.WIN_SCREEN, self.character.get_points())
+			if self._character.is_colliding(self._goal):
+				self._bg_sound.stop()
+				self._window.switch(window.Window.WIN_SCREEN, self._character.get_points())
 
 		# center camera around player
-		self.camera[0] = self.character.get_x() - self.width / 2
-		self.camera[1] = self.character.get_y() - self.height / 2
+		self._camera[0] = self._character.get_x() - self._width / 2
+		self._camera[1] = self._character.get_y() - self._height / 2
 
 		# draw the platforms
-		for platform in self.platforms:
-			platform.draw(self.screen, tick, self.camera, (self.width, self.height))
+		for platform in self._platforms:
+			platform.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw collectables
-		for collectable in self.collectables:
-			collectable.draw(self.screen, tick, self.camera, (self.width, self.height))
+		for collectable in self._collectables:
+			collectable.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw enemies
-		for enemy in self.enemies:
-			enemy.draw(self.screen, tick, self.camera, (self.width, self.height))
+		for enemy in self._enemies:
+			enemy.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw the character
-		self.character.draw(self.screen, tick, self.camera, (self.width, self.height))
+		self._character.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw animations
-		for animation in self.animations:
-			if not animation.draw(self.screen, self.camera, tick):
-				self.animations.remove(animation)
+		for animation in self._animations:
+			if not animation.draw(self._screen, self._camera, tick):
+				self._animations.remove(animation)
 
 		# draw points
-		text = self.font.render(str(self.character.get_points()), True, (255, 255, 255))
-		self.screen.blit(text, (self.width - text.get_width() - 10, 10))
-		self.screen.blit(self.coin, (self.width - text.get_width() - 32, 14))
+		text = self._font.render(str(self._character.get_points()), True, (255, 255, 255))
+		self._screen.blit(text, (self._width - text.get_width() - 10, 10))
+		self._screen.blit(self._coin, (self._width - text.get_width() - 32, 14))
 
 		# draw lives
-		self.screen.blit(self.heart, (10, 14))
-		text = self.font.render(str(self.character.get_lives()), True, (255, 255, 255))
-		self.screen.blit(text, (32, 10))
+		self._screen.blit(self._heart, (10, 14))
+		text = self._font.render(str(self._character.get_lives()), True, (255, 255, 255))
+		self._screen.blit(text, (32, 10))
 
 		# draw the goal
-		self.screen.blit(self.goal_pic, (self.goal.x-self.camera[0], self.goal.y-self.camera[1]))
+		self._screen.blit(self._goal_pic, (self._goal.x-self._camera[0], self._goal.y-self._camera[1]))
 
 
 
 
 	def key_down(self, key):
+		""" Handles key down events.
+
+		This method handles key down events.
+		The pressing of the escape button results in the changing to the menu screen.
+		The cursor keys will move the character.
+
+		Args:
+			key: The key event information provided by pygame.
+		"""
 		if key == K_ESCAPE:
-			self.bg_sound.stop()
-			self.window.switch(window.Window.MENU)
+			self._bg_sound.stop()
+			self._window.switch(window.Window.MENU)
 		elif key == K_RIGHT:
-			self.dx += 1
+			self._dx += 1
 		elif key == K_LEFT:
-			self.dx -= 1
+			self._dx -= 1
 		elif key == K_UP:
-			self.jumping = True
+			self._jumping = True
 
 	def key_up(self, key):
+		""" Handles key up events.
+
+		This method handles key up events.
+		The release of the cursor keys will be handled.
+
+		Args:
+			key: The key event information provided by pygame.
+		"""
 		if key == K_RIGHT:
-			self.dx -= 1
+			self._dx -= 1
 		elif key == K_LEFT:
-			self.dx += 1
+			self._dx += 1
 		elif key == K_UP:
-			self.jumping = False
+			self._jumping = False
 
 	def start_music(self):
+		""" Starts the music.
+
+		This method will start the background sound as a repeating music.
+		"""
 		#self.bg_sound.play(-1)
 		pass

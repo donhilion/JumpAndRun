@@ -2,7 +2,7 @@ import pygame
 from pygame.constants import K_ESCAPE
 import window
 
-__author__ = 'donhilion'
+__author__ = 'Donhilion'
 
 
 class GameOver(object):

@@ -1,6 +1,6 @@
-__author__ = 'Donhilion'
-
 from camera import Camera
+
+__author__ = 'Donhilion'
 
 
 class GraphicsEnvironment(object):
