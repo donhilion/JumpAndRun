@@ -287,3 +287,13 @@ class Character(object):
 			True if the character is invincible at the moment. Else otherwise.
 		"""
 		return self._invincible
+
+	def get_walking_line(self):
+		""" Returns the walking line.
+
+		This method returns the character's current walking line.
+
+		Returns:
+			The character's current walking line.
+		"""
+		return self._walking_line

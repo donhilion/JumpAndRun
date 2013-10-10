@@ -10,6 +10,7 @@ import window
 
 __author__ = 'Donhilion'
 
+
 class GameSurface(object):
 	""" The game surface class.
 
@@ -73,7 +74,7 @@ class GameSurface(object):
 		self._width = width
 		self._height = height
 		self._window = window
-		self._camera = [0,0]
+		self._camera = [0, 0]
 		self._bg = PictureManager.MANAGER.loaded[GameSurface.BG_PICTURE_NAME]
 		self._bg_w = self._bg.get_width()
 		self._bg_h = self._bg.get_height()
@@ -93,12 +94,11 @@ class GameSurface(object):
 		collectables = self._level.get_collectables()
 		self._collectables = []
 		for collectable in collectables:
-			self._collectables.append(Collectable(collectable, pic = self._coin))
+			self._collectables.append(Collectable(collectable, pic=self._coin))
 
 		goal = self._level.get_goal()
 		self._goal = Rect(goal, (50, 50))
 		self._goal_pic = PictureManager.MANAGER.loaded[GameSurface.GOAL_PICTURE_NAME]
-
 
 		deadzone = self._level.get_deadzone()
 		self._deadzone = Rect(deadzone[:2], deadzone[2:])
@@ -127,7 +127,7 @@ class GameSurface(object):
 		while y < self._bg_h:
 			x = -(self._camera[0] % self._bg_w)
 			while x < self._bg_w:
-				self._screen.blit(self._bg, (x,y))
+				self._screen.blit(self._bg, (x, y))
 				x += self._bg_w
 			y += self._bg_h
 
@@ -140,15 +140,16 @@ class GameSurface(object):
 		self._last_ticks = current_ticks
 
 		# handle the ticks
-		for i in range(self._tick/10 - tick):
+		for i in range(self._tick / 10 - tick):
 			# handle enemies
 			for enemy in self._enemies:
 				enemy.tick(self._platforms)
 
 			# check walking collision
 			standing = False
+			walking_line = self._character.get_walking_line()
 			for platform in self._platforms:
-				if platform.collides(self._character._walking_line):
+				if platform.collides(walking_line):
 					standing = True
 					break
 			self._character._is_falling = not standing
@@ -210,9 +211,7 @@ class GameSurface(object):
 		self._screen.blit(text, (32, 10))
 
 		# draw the goal
-		self._screen.blit(self._goal_pic, (self._goal.x-self._camera[0], self._goal.y-self._camera[1]))
-
-
+		self._screen.blit(self._goal_pic, (self._goal.x - self._camera[0], self._goal.y - self._camera[1]))
 
 
 	def key_down(self, key):
