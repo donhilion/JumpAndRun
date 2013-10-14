@@ -8,48 +8,78 @@ from resources.settings.settings_manager import SettingsManager
 from menu import Menu
 from game_surface import GameSurface
 
-class Window(object):
-	''' The main window.
-	'''
+__author__ = 'Donhilion'
 
+
+class Window(object):
+	""" The window class.
+
+	An instance of this class represents the main window.
+
+	Attributes:
+		_settings_manager: The settings manager.
+		_width: The width of the window.
+		_height: The height of the window.
+		_screen: The screen to draw on.
+		_menu: An instance of the menu class.
+		_game: An instance of the game surface class.
+		_game_over: An instance of the game over class.
+		_current_display: The current display. This could be the menu, game surface, game over or win screen.
+	"""
+
+	# Values for the switch method.
 	MENU, GAME, GAME_OVER, WIN_SCREEN = range(4)
+	# The name of the config file.
+	GRAPHICS_CONFIG = "graphics.json"
+	# The key for the window width.
+	WIDTH_KEY = "width"
+	# The key for the window height.
+	HEIGHT_KEY = "height"
 
 	def __init__(self):
-		self.settings_manager = SettingsManager.MANAGER
-		if self.settings_manager is not None:
+		""" Generates a new instance of this class.
+
+		Generates a new instance of this class and sets the field information.
+		"""
+		self._settings_manager = SettingsManager.MANAGER
+		if self._settings_manager is not None:
 			try:
-				self.width = \
-					self.settings_manager.settings["graphics.json"]["width"]
-				self.height = \
-					self.settings_manager.settings["graphics.json"]["height"]
+				self._width = \
+					self._settings_manager.settings[Window.GRAPHICS_CONFIG][Window.WIDTH_KEY]
+				self._height = \
+					self._settings_manager.settings[Window.GRAPHICS_CONFIG][Window.HEIGHT_KEY]
 			except Exception, e:
 				logging.error("Error while get window size")
 				logging.error(e)
-				self.width = 400
-				self.height = 400
+				self._width = 400
+				self._height = 400
 		else:
 			logging.warn("No settings manager")
-			self.width = 400
-			self.height = 400
-		self.screen = pygame.display.set_mode((self.width, self.height), 0, 32)
-		self.menu = Menu(self.screen, self.width, self.height, self)
-		self.game = GameSurface(self.screen, self.width, self.height, self)
-		self.game_over = GameOver(self.screen, self.width, self.height, self)
-		self.win_screen = WinScreen(self.screen, self.width, self.height, self)
-		self.current_display = self.menu
+			self._width = 400
+			self._height = 400
+		self._screen = pygame.display.set_mode((self._width, self._height), 0, 32)
+		self._menu = Menu(self._screen, self._width, self._height, self)
+		self._game = GameSurface(self._screen, self._width, self._height, self)
+		self._game_over = GameOver(self._screen, self._width, self._height, self)
+		self._win_screen = WinScreen(self._screen, self._width, self._height, self)
+		self._current_display = self._menu
 
 	def start(self):
+		""" Starts the event handling.
+
+		This method starts the event handling.
+		"""
 		last_update = pygame.time.get_ticks()
 		while True:
 			for event in pygame.event.get():
 				if event.type == QUIT:
 					exit() # TODO: check what else has to be done
 				elif event.type == KEYDOWN:
-					self.current_display.key_down(event.key)
+					self._current_display.key_down(event.key)
 				elif event.type == KEYUP:
-					self.current_display.key_up(event.key)
+					self._current_display.key_up(event.key)
 
-			self.current_display.draw()
+			self._current_display.draw()
 			pygame.display.update()
 
 			current_update = pygame.time.get_ticks()
@@ -57,20 +87,29 @@ class Window(object):
 			last_update = current_update
 
 			if delta < 16: # 16 for 60 fps
-				pygame.time.wait(16-delta)
+				pygame.time.wait(16 - delta)
 
 
 	def switch(self, type, params=None):
+		""" Switches the current display.
+
+		Switches the current display according to the value in type.
+
+		Args:
+			type: Determines which display should be switched to. Valid values are MENU, GAME, GAME_OVER, WIN_SCREEN.
+			params: An optional list of parameters. This list will be forwarded to the new display.
+					Currently only the win screen has parameters.
+		"""
 		if type == Window.MENU:
-			self.current_display = self.menu
+			self._current_display = self._menu
 		elif type == Window.GAME:
-			self.current_display = self.game
-			self.game.reset_tick()
-			self.game.start_music()
+			self._current_display = self._game
+			self._game.reset_tick()
+			self._game.start_music()
 		elif type == Window.GAME_OVER:
-			self.current_display = self.game_over
-			self.game = GameSurface(self.screen, self.width, self.height, self) # reset game
+			self._current_display = self._game_over
+			self._game = GameSurface(self._screen, self._width, self._height, self) # reset game
 		elif type == Window.WIN_SCREEN:
-			self.win_screen.set_points(params)
-			self.current_display = self.win_screen
-			self.game = GameSurface(self.screen, self.width, self.height, self) # reset game
+			self._win_screen.set_points(params)
+			self._current_display = self._win_screen
+			self._game = GameSurface(self._screen, self._width, self._height, self) # reset game
