@@ -2,7 +2,7 @@ import xml.dom.minidom as dom
 import logging
 from thread import start_new_thread, allocate_lock
 
-from ressources.ressource_manager import RessourceWrapper
+from resources.ressource_manager import RessourceWrapper
 
 class AnimationManager(object):
 	'''
@@ -23,7 +23,7 @@ class AnimationManager(object):
 	def load_animation_asynchroniously(self, wrapper):
 		try:
 			logging.debug("Begin loading animation " + wrapper.name)
-			tree = dom.parse("ressources/animations/" + wrapper.name)
+			tree = dom.parse("resources/animations/" + wrapper.name)
 			frames = {}
 			animations = {}
 

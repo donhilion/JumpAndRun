@@ -2,10 +2,10 @@ import pygame
 import logging
 from thread import start_new_thread, allocate_lock
 
-from ressources.ressource_manager import RessourceWrapper
+from resources.ressource_manager import RessourceWrapper
 
 class PictureManager(object):
-	''' A manager for picture ressources.
+	''' A manager for picture resources.
 
 	This manager loads pictures asynchroniously.
 	'''
@@ -26,7 +26,7 @@ class PictureManager(object):
 		try:
 			logging.debug("Begin loading picture " + ressource_wrapper.name)
 			self.lock.acquire()
-			ressource_wrapper.data = pygame.image.load("ressources/pictures/" \
+			ressource_wrapper.data = pygame.image.load("resources/pictures/" \
 				+ ressource_wrapper.name).convert_alpha()
 			self.loaded[ressource_wrapper.name] = ressource_wrapper.data
 			self.lock.release()

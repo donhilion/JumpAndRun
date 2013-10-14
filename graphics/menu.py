@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import logging
 
-from ressources.pictures.picture_manager import PictureManager
+from resources.pictures.picture_manager import PictureManager
 import window
 
 class MenuEntry(object):

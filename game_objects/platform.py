@@ -1,6 +1,6 @@
 from pygame import Surface, Rect
 
-from ressources.pictures.picture_manager import PictureManager
+from resources.pictures.picture_manager import PictureManager
 
 
 __author__ = 'Donhilion'

@@ -3,7 +3,7 @@ __author__ = 'Donhilion'
 import logging
 from thread import start_new_thread, allocate_lock
 
-from ressources.ressource_manager import RessourceWrapper
+from resources.ressource_manager import RessourceWrapper
 from game_objects.level import Level
 
 class LevelManager(object):
@@ -23,7 +23,7 @@ class LevelManager(object):
 	def load_level_asynchroniously(self, wrapper):
 		try:
 			logging.debug("Begin loading level " + wrapper.name)
-			with open('ressources/levels/' + wrapper.name + '.json', 'r') as f:
+			with open('resources/levels/' + wrapper.name + '.json', 'r') as f:
 				s = f.read()
 			level = Level(json_string=s)
 

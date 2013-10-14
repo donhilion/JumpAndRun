@@ -1,12 +1,12 @@
 import pygame
 import logging
 from thread import start_new_thread, allocate_lock
-from ressources.ressource_manager import RessourceWrapper
+from resources.ressource_manager import RessourceWrapper
 
 __author__ = 'Donhilion'
 
 class SoundManager(object):
-	''' A manager for sound ressources.
+	''' A manager for sound resources.
 
 	This manager loads sounds asynchroniously.
 	'''
@@ -27,7 +27,7 @@ class SoundManager(object):
 		try:
 			logging.debug("Begin loading sound " + ressource_wrapper.name)
 			self.lock.acquire()
-			ressource_wrapper.data = pygame.mixer.Sound("ressources/sounds/" \
+			ressource_wrapper.data = pygame.mixer.Sound("resources/sounds/" \
 				+ ressource_wrapper.name)
 			self.loaded[ressource_wrapper.name] = ressource_wrapper.data
 			self.lock.release()

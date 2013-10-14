@@ -1,67 +1,110 @@
 import pygame
 from pygame.locals import *
-from ressources.levels.level_manager import LevelManager
+from resources.levels.level_manager import LevelManager
 
-from ressources.pictures.picture_manager import PictureManager
-from ressources.settings.settings_manager import SettingsManager
-from ressources.animations.animation_manager import AnimationManager
-from ressources.ressource_manager import RessourceWrapper
-from ressources.sounds.sound_manager import SoundManager
+from resources.pictures.picture_manager import PictureManager
+from resources.settings.settings_manager import SettingsManager
+from resources.animations.animation_manager import AnimationManager
+from resources.ressource_manager import RessourceWrapper
+from resources.sounds.sound_manager import SoundManager
+
+__author__ = 'Donhilion'
 
 
 class LoadingWindow(object):
-	'''
-	'''
+	""" The loading window class.
 
+	An object of this class represents a loading window.
+	This window will load files and shows the progress of this loading.
+
+	Attributes:
+		_screen: The screen surface to draw on.
+		_font: The font used for displaying the information.
+		_font_height: The height of the font.
+	"""
+
+	# Name of the file containing the picture information.
 	PICTURES_FILE = "pictures.json"
+	# Name of the file containing the sound information.
 	SOUNDS_FILE = "sounds.json"
+	# List of setting files to load.
 	SETTINGS_FILES = ("graphics.json", PICTURES_FILE, SOUNDS_FILE)
+	# List of animation files to load.
 	ANIMATIONS_FILES = ("animations.xml",)
+	# List of level files to load.
 	LEVELS_FILES = ("level0",)
-
-	INTEND = "    "
-
+	# String used for indentation.
+	INDENT = "    "
+	# The dimensions of the window.
 	SIZE = (WIDTH, HEIGHT) = (400, 400)
 
 	def __init__(self):
-		self.screen = pygame.display.set_mode(LoadingWindow.SIZE, 0, 32)
-		self.font = pygame.font.SysFont("arial", 16)
-		self.font_height = self.font.get_linesize()
+		""" Generates a new instance of this class.
 
-	def load_pictures(self, pictures, infos, results):
-		infos.append("Start loading pictures")
+		Generates a new instance of this class and sets the field information.
+		"""
+		self._screen = pygame.display.set_mode(LoadingWindow.SIZE, 0, 32)
+		self._font = pygame.font.SysFont("arial", 16)
+		self._font_height = self._font.get_linesize()
+
+	@staticmethod
+	def load_pictures(pictures, info, results):
+		""" Loads the pictures.
+
+		This method loads the pictures using the picture manager.
+
+		Args:
+			pictures: The list of picture file names to load.
+			info: The showed list of information.
+			results: The list of result elements.
+		"""
+		info.append("Start loading pictures")
 		manager = PictureManager()
 		for name in pictures:
-			infos.append(LoadingWindow.INTEND + "Start loading " + \
-				name["value"])
+			info.append(LoadingWindow.INDENT + "Start loading " + \
+						name["value"])
 			results.append(manager.load_picture(name["value"]))
 
-	def load_sounds(self, sounds, infos, results):
-		infos.append("Start loading sounds")
+	@staticmethod
+	def load_sounds(sounds, info, results):
+		""" Loads the sounds.
+
+		This method loads the sounds using the sound manager.
+
+		Args:
+			sounds: The list of sound file names to load.
+			info: The showed list of information.
+			results: The list of result elements.
+		"""
+		info.append("Start loading sounds")
 		manager = SoundManager()
 		for name in sounds:
-			infos.append(LoadingWindow.INTEND + "Start loading " + \
-				name)
+			info.append(LoadingWindow.INDENT + "Start loading " + \
+						name)
 			results.append(manager.load_sound(name))
 
 
 	def load(self):
+		""" Loads the files.
+
+		This method loads the setting and resource files and shows the progress on the screen.
+		"""
 		running = True
-		infos = []
+		info = []
 		results = []
 		level_loaded = False
 
-		infos.append("Start loading graphics settings")
-		self.settings_manager = SettingsManager()
+		info.append("Start loading graphics settings")
+		settings_manager = SettingsManager()
 		for file_name in LoadingWindow.SETTINGS_FILES:
-			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
-			results.append(self.settings_manager.load_setting(file_name))
+			info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+			results.append(settings_manager.load_setting(file_name))
 
-		infos.append("Start loading animations")
-		self.animation_manager = AnimationManager()
+		info.append("Start loading animations")
+		animation_manager = AnimationManager()
 		for file_name in LoadingWindow.ANIMATIONS_FILES:
-			infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
-			results.append(self.animation_manager.load_animation(file_name))
+			info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+			results.append(animation_manager.load_animation(file_name))
 
 		while running:
 			for event in pygame.event.get():
@@ -70,25 +113,24 @@ class LoadingWindow(object):
 
 			for result in results:
 				if result.status == RessourceWrapper.LOADED:
-					infos.append("Done loading " + result.name)
+					info.append("Done loading " + result.name)
 					results.remove(result)
 					# load images
 					if result.name == LoadingWindow.PICTURES_FILE:
-						self.load_pictures(result.data, infos, results)
+						self.load_pictures(result.data, info, results)
 					if result.name == LoadingWindow.SOUNDS_FILE:
-						self.load_sounds(result.data, infos, results)
+						self.load_sounds(result.data, info, results)
 				if result.status == RessourceWrapper.FAILED:
-					ok = False
-					infos.append("Error during loading " + result.name)
+					info.append("Error during loading " + result.name)
 					results.remove(result)
-		
-			self.screen.fill((0, 0, 0))
 
-			line = LoadingWindow.HEIGHT - len(infos) * self.font_height
-			for info in infos:
-				text = self.font.render(info, True, (0, 255, 0))
-				self.screen.blit(text, (8, line))
-				line += self.font_height
+			self._screen.fill((0, 0, 0))
+
+			line = LoadingWindow.HEIGHT - len(info) * self._font_height
+			for info in info:
+				text = self._font.render(info, True, (0, 255, 0))
+				self._screen.blit(text, (8, line))
+				line += self._font_height
 
 			pygame.display.update()
 
@@ -96,9 +138,9 @@ class LoadingWindow(object):
 				if level_loaded:
 					running = False
 				else:
-					infos.append("Start loading levels")
-					self.level_manager = LevelManager()
+					info.append("Start loading levels")
+					level_manager = LevelManager()
 					for file_name in LoadingWindow.LEVELS_FILES:
-						infos.append(LoadingWindow.INTEND + "Start loading " + file_name)
-						results.append(self.level_manager.load_level(file_name))
+						info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+						results.append(level_manager.load_level(file_name))
 					level_loaded = True

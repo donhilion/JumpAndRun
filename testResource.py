@@ -1,6 +1,6 @@
-from ressources.pictures.picture_manager import PictureManager
-from ressources.settings.settings_manager import SettingsManager
-from ressources.ressource_manager import RessourceWrapper
+from resources.pictures.picture_manager import PictureManager
+from resources.settings.settings_manager import SettingsManager
+from resources.ressource_manager import RessourceWrapper
 
 import pygame
 

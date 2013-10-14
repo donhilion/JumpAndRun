@@ -4,7 +4,7 @@ import logging
 from graphics.game_over import GameOver
 from graphics.win_screen import WinScreen
 
-from ressources.settings.settings_manager import SettingsManager
+from resources.settings.settings_manager import SettingsManager
 from menu import Menu
 from game_surface import GameSurface
 

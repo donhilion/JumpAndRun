@@ -2,7 +2,7 @@ import json
 import logging
 from thread import start_new_thread
 
-from ressources.ressource_manager import RessourceWrapper
+from resources.ressource_manager import RessourceWrapper
 
 class SettingsManager(object):
 	'''
@@ -22,7 +22,7 @@ class SettingsManager(object):
 	
 	def load_setting_asynchroniously(self, wrapper):
 		try:
-			with open('ressources/settings/' + wrapper.name, 'r') as f:
+			with open('resources/settings/' + wrapper.name, 'r') as f:
 				json_string = f.read()
 			json_object = json.loads(json_string)
 			self.settings[wrapper.name] = json_object

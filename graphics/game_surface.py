@@ -2,10 +2,10 @@ import pygame
 from pygame.locals import *
 from game_objects.character import Character
 from game_objects.collectable import Collectable
-from ressources.levels.level_manager import LevelManager
+from resources.levels.level_manager import LevelManager
 
-from ressources.pictures.picture_manager import PictureManager
-from ressources.sounds.sound_manager import SoundManager
+from resources.pictures.picture_manager import PictureManager
+from resources.sounds.sound_manager import SoundManager
 import window
 
 __author__ = 'Donhilion'

@@ -1,9 +1,9 @@
 from pygame.rect import Rect
 from graphics.drawables.animated import Animated
 from graphics.drawables.animation import Animation
-from ressources.animations.animation_manager import AnimationManager
-from ressources.pictures.picture_manager import PictureManager
-from ressources.sounds.sound_manager import SoundManager
+from resources.animations.animation_manager import AnimationManager
+from resources.pictures.picture_manager import PictureManager
+from resources.sounds.sound_manager import SoundManager
 
 __author__ = 'Donhilion'
 

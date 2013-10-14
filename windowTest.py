@@ -4,7 +4,7 @@ from pygame.locals import *
 pygame.init()
 screen = pygame.display.set_mode((500, 500))
 
-bg_filename = "ressources/pictures/background.png"
+bg_filename = "resources/pictures/background.png"
 
 bg = pygame.image.load(bg_filename).convert()
 

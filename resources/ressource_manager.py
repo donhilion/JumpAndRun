@@ -5,16 +5,16 @@ Created on 10.07.2012
 '''
 
 class RessourceManager(object):
-	''' A manager for ressources.
+	''' A manager for resources.
 
-	This manager loads ressources/files asynchroniously.
+	This manager loads resources/files asynchroniously.
 	'''
 	
 	def __init__(self):
 		pass
 
 class RessourceWrapper(object):
-	''' A wrapper for ressources.
+	''' A wrapper for resources.
 
 	This wrapper contains informations about the status of the ressource
 	including if the ressource is loaded, status messages and the ressource
