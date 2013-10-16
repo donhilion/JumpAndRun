@@ -86,7 +86,7 @@ class GameSurface(object):
 		self._jumping = False
 		self._font = pygame.font.SysFont("arial", 24)
 
-		self._level = LevelManager.MANAGER.levels[level]
+		self._level = LevelManager.MANAGER.get_level(level)
 
 		self._character = Character(pos=self._level.get_start())
 		self._platforms = self._level.get_platforms()
