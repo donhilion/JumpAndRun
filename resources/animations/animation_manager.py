@@ -6,6 +6,7 @@ from resources.ressource_manager import RessourceWrapper
 
 __author__ = 'Donhilion'
 
+
 class AnimationManager(object):
 	""" The animation manager class.
 
@@ -41,7 +42,7 @@ class AnimationManager(object):
 		Returns:
 			A wrapper containing the progress information and when the animation is loaded the animation.
 		"""
-		wrapper = RessourceWrapper(name = name)
+		wrapper = RessourceWrapper(name=name)
 		start_new_thread(self.load_animation_asynchronously, (wrapper,))
 		return wrapper
 
@@ -68,7 +69,7 @@ class AnimationManager(object):
 			wrapper.status = RessourceWrapper.LOADED
 		except Exception as ex:
 			logging.error("Error while loading animation " + \
-				wrapper.name)
+						  wrapper.name)
 			logging.error(ex)
 			wrapper.status = RessourceWrapper.FAILED
 			try:
