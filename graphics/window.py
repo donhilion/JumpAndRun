@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import logging
+import sys
 from graphics.game_over import GameOver
 from graphics.win_screen import WinScreen
 
@@ -73,7 +74,7 @@ class Window(object):
 		while True:
 			for event in pygame.event.get():
 				if event.type == QUIT:
-					exit() # TODO: check what else has to be done
+					sys.exit() # TODO: check what else has to be done
 				elif event.type == KEYDOWN:
 					self._current_display.key_down(event.key)
 				elif event.type == KEYUP:

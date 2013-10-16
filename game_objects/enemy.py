@@ -42,7 +42,7 @@ class Enemy(object):
 			pos = [0, 0]
 		if pic is None or death_animation is None:
 			animation_manager = AnimationManager.MANAGER
-			animation = animation_manager.animations["animations.xml"]
+			animation = animation_manager.get_animation("animations")
 			if pic is None:
 				pic = Animated(PictureManager.MANAGER, animation[0], animation[1]["Monster"])
 			if death_animation is None:

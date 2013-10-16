@@ -1,0 +1,181 @@
+{
+    "frames": {
+        "HeroStand": {
+            "picture": "Hero.png",
+            "left": 0,
+            "top": 0,
+            "right": 27,
+            "bottom": 48
+        },
+        "HeroWalk0": {
+            "picture": "Hero.png",
+            "left": 0,
+            "top": 48,
+            "right": 27,
+            "bottom": 96
+        },
+        "HeroWalk1": {
+            "picture": "Hero.png",
+            "left": 0,
+            "top": 96,
+            "right": 27,
+            "bottom": 144
+        },
+        "HeroWalk2": {
+            "picture": "Hero.png",
+            "left": 0,
+            "top": 144,
+            "right": 27,
+            "bottom": 192
+        },
+        "HeroJump": {
+            "picture": "Hero.png",
+            "left": 0,
+            "top": 192,
+            "right": 27,
+            "bottom": 240
+        },
+        "Monster": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 0,
+            "right": 30,
+            "bottom": 30
+        },
+        "MonsterExplode0": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 58,
+            "right": 58,
+            "bottom": 116
+        },
+        "MonsterExplode1": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 116,
+            "right": 58,
+            "bottom": 174
+        },
+        "MonsterExplode2": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 174,
+            "right": 58,
+            "bottom": 232
+        },
+        "MonsterExplode3": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 232,
+            "right": 58,
+            "bottom": 290
+        },
+        "MonsterExplode4": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 290,
+            "right": 58,
+            "bottom": 348
+        },
+        "MonsterExplode5": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 348,
+            "right": 58,
+            "bottom": 406
+        },
+        "MonsterExplode6": {
+            "picture": "monster.png",
+            "left": 0,
+            "top": 406,
+            "right": 58,
+            "bottom": 464
+        }
+    },
+    "animations": {
+        "HeroStand": {
+            "parts": [
+                {
+                    "duration": 1,
+                    "frame": "HeroStand"
+                }
+            ]
+        },
+        "HeroWalk": {
+            "parts": [
+                {
+                    "duration": 15,
+                    "frame": "HeroWalk0"
+                },
+                {
+                    "duration": 15,
+                    "frame": "HeroWalk1"
+                },
+                {
+                    "duration": 15,
+                    "frame": "HeroWalk2"
+                },
+                {
+                    "duration": 15,
+                    "frame": "HeroWalk1"
+                }
+            ]
+        },
+        "HeroJump": {
+            "parts": [
+                {
+                    "duration": 1,
+                    "frame": "HeroJump"
+                }
+            ]
+        },
+        "HeroJumpRight": {
+            "parts": [
+                {
+                    "duration": 1,
+                    "frame": "HeroWalk0"
+                }
+            ]
+        },
+        "Monster": {
+            "parts": [
+                {
+                    "duration": 1,
+                    "frame": "Monster"
+                }
+            ]
+        },
+        "MonsterExplode": {
+            "parts": [
+                {
+                    "duration": 10,
+                    "frame": "MonsterExplode0"
+                },
+                {
+                    "duration": 15,
+                    "frame": "MonsterExplode1"
+                },
+                {
+                    "duration": 10,
+                    "frame": "MonsterExplode2"
+                },
+                {
+                    "duration": 10,
+                    "frame": "MonsterExplode3"
+                },
+                {
+                    "duration": 10,
+                    "frame": "MonsterExplode4"
+                },
+                {
+                    "duration": 10,
+                    "frame": "MonsterExplode5"
+                },
+                {
+                    "duration": 20,
+                    "frame": "MonsterExplode6"
+                }
+            ]
+        }
+    }
+}

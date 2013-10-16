@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import sys
 from resources.pictures.picture_manager import PictureManager
 import window
 
@@ -39,7 +40,7 @@ class Menu(object):
 
 	# The menu entries to show.
 	ENTRIES = (MenuEntry("Start", None), MenuEntry("Options", None),
-			   MenuEntry("Ende", quit))
+			   MenuEntry("Ende", sys.exit))
 
 	def __init__(self, screen, width, height, window):
 		""" Generates a new instance of this class.

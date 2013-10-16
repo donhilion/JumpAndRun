@@ -72,7 +72,7 @@ class Character(object):
 		self._invincible = 0
 		if walk_animation is None or stand_animation is None or jump_animation is None or jump_right_animation is None:
 			animation_manager = AnimationManager.MANAGER
-			animation = animation_manager.animations["animations.xml"]
+			animation = animation_manager.get_animation("animations")
 			if walk_animation is None:
 				walk_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroWalk"], True)
 			if stand_animation is None:

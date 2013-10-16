@@ -1,81 +1,69 @@
-import xml.dom.minidom as dom
+import json
 import logging
 from thread import start_new_thread, allocate_lock
 
 from resources.ressource_manager import RessourceWrapper
 
-class AnimationManager(object):
-	'''
-	'''
+__author__ = 'Donhilion'
 
+class AnimationManager(object):
+	""" The animation manager class.
+
+	An instance of this class represents an animation manager.
+
+	Attributes:
+		_lock: A lock for controlling asynchronous access.
+		_animation: A dictionary containing every loaded animation.
+	"""
+
+	# An instance of this class.
 	MANAGER = None
 
 	def __init__(self):
-		self.lock = allocate_lock()
-		self.animations = {}
+		""" Generates a new instance of this class.
+
+		Generates a new instance of this class and sets the field information.
+		"""
+		self._lock = allocate_lock()
+		self._animations = {}
 		AnimationManager.MANAGER = self
 
 	def load_animation(self, name):
+		""" Loads the animation.
+
+		This method loads the animation with the given name.
+		Calling this method starts a new thread which will loads the animation.
+		A wrapper is returned containing the progress information and when the animation is loaded the animation.
+
+		Args:
+			name: The name of the animation to load.
+
+		Returns:
+			A wrapper containing the progress information and when the animation is loaded the animation.
+		"""
 		wrapper = RessourceWrapper(name = name)
-		start_new_thread(self.load_animation_asynchroniously, (wrapper,))
+		start_new_thread(self.load_animation_asynchronously, (wrapper,))
 		return wrapper
 
-	def load_animation_asynchroniously(self, wrapper):
+	def load_animation_asynchronously(self, wrapper):
+		""" Loads the animation.
+
+		This method loads the animation with the name included in the wrapper.
+
+		Args:
+			wrapper: The wrapper containing the name of the animation. The result will be stored in this wrapper.
+		"""
 		try:
 			logging.debug("Begin loading animation " + wrapper.name)
-			tree = dom.parse("resources/animations/" + wrapper.name)
-			frames = {}
-			animations = {}
+			with open('resources/animations/' + wrapper.name + ".json", 'r') as f:
+				json_string = f.read()
+			json_object = json.loads(json_string)
+			frames = json_object["frames"]
+			animations = json_object["animations"]
 
-			for first in tree.firstChild.childNodes:
-				if first.nodeName == "frames":
-					for frame in first.childNodes:
-						name = None
-						picture = None
-						left = None
-						top = None
-						right = None
-						bottom = None
-						for entry in frame.childNodes:
-							if entry.nodeName == "name":
-								name = entry.firstChild.data.strip()
-							elif entry.nodeName == "picture":
-								picture = entry.firstChild.data.strip()
-							elif entry.nodeName == "left":
-								left = entry.firstChild.data.strip()
-							elif entry.nodeName == "top":
-								top = entry.firstChild.data.strip()
-							elif entry.nodeName == "right":
-								right = entry.firstChild.data.strip()
-							elif entry.nodeName == "bottom":
-								bottom = entry.firstChild.data.strip()
-						if name is not None and picture is not None and \
-								left is not None and top is not None and \
-								right is not None and bottom is not None:
-							frames[name] = (picture, left, top, right, bottom)
-				elif first.nodeName == "animations":
-					for animation in first.childNodes:
-						name = None
-						frames_of_animation = []
-						for part in animation.childNodes:
-							if part.nodeName == "name":
-								name = part.firstChild.data.strip()
-							else:
-								frame = None
-								duration = None
-								for entry in part.childNodes:
-									if entry.nodeName == "frame":
-										frame = entry.firstChild.data.strip()
-									elif entry.nodeName == "duration":
-										duration = entry.firstChild.data.strip()
-								if frame is not None and duration is not None:
-									frames_of_animation.append((frame, duration))
-						if name is not None:
-							animations[name] = frames_of_animation
-
-			self.lock.acquire()
-			self.animations[wrapper.name] = (frames, animations)
-			self.lock.release()
+			self._lock.acquire()
+			self._animations[wrapper.name] = (frames, animations)
+			self._lock.release()
 			logging.debug("End loading picture " + wrapper.name)
 			wrapper.status = RessourceWrapper.LOADED
 		except Exception as ex:
@@ -84,6 +72,22 @@ class AnimationManager(object):
 			logging.error(ex)
 			wrapper.status = RessourceWrapper.FAILED
 			try:
-				self.lock.release()
+				self._lock.release()
 			except Exception as ex:
 				logging.error(ex)
+
+	def get_animation(self, name):
+		""" Returns the animation.
+
+		This method returns the animation with the given name.
+		If no animation with this name was loaded, None is returned.
+
+		Args:
+			name: The name of the animation to return.
+
+		Returns:
+			The animation with the given name or None if this animation was not loaded.
+		"""
+		if name in self._animations.keys():
+			return self._animations[name]
+		return None

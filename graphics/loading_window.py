@@ -30,7 +30,7 @@ class LoadingWindow(object):
 	# List of setting files to load.
 	SETTINGS_FILES = ("graphics.json", PICTURES_FILE, SOUNDS_FILE)
 	# List of animation files to load.
-	ANIMATIONS_FILES = ("animations.xml",)
+	ANIMATIONS_FILES = ("animations",)
 	# List of level files to load.
 	LEVELS_FILES = ("level0",)
 	# String used for indentation.
@@ -90,20 +90,20 @@ class LoadingWindow(object):
 		This method loads the setting and resource files and shows the progress on the screen.
 		"""
 		running = True
-		info = []
+		infos = []
 		results = []
 		level_loaded = False
 
-		info.append("Start loading graphics settings")
+		infos.append("Start loading graphics settings")
 		settings_manager = SettingsManager()
 		for file_name in LoadingWindow.SETTINGS_FILES:
-			info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+			infos.append(LoadingWindow.INDENT + "Start loading " + file_name)
 			results.append(settings_manager.load_setting(file_name))
 
-		info.append("Start loading animations")
+		infos.append("Start loading animations")
 		animation_manager = AnimationManager()
 		for file_name in LoadingWindow.ANIMATIONS_FILES:
-			info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+			infos.append(LoadingWindow.INDENT + "Start loading " + file_name)
 			results.append(animation_manager.load_animation(file_name))
 
 		while running:
@@ -113,21 +113,21 @@ class LoadingWindow(object):
 
 			for result in results:
 				if result.status == RessourceWrapper.LOADED:
-					info.append("Done loading " + result.name)
+					infos.append("Done loading " + result.name)
 					results.remove(result)
 					# load images
 					if result.name == LoadingWindow.PICTURES_FILE:
-						self.load_pictures(result.data, info, results)
+						self.load_pictures(result.data, infos, results)
 					if result.name == LoadingWindow.SOUNDS_FILE:
-						self.load_sounds(result.data, info, results)
+						self.load_sounds(result.data, infos, results)
 				if result.status == RessourceWrapper.FAILED:
-					info.append("Error during loading " + result.name)
+					infos.append("Error during loading " + result.name)
 					results.remove(result)
 
 			self._screen.fill((0, 0, 0))
 
-			line = LoadingWindow.HEIGHT - len(info) * self._font_height
-			for info in info:
+			line = LoadingWindow.HEIGHT - len(infos) * self._font_height
+			for info in infos:
 				text = self._font.render(info, True, (0, 255, 0))
 				self._screen.blit(text, (8, line))
 				line += self._font_height
@@ -138,9 +138,9 @@ class LoadingWindow(object):
 				if level_loaded:
 					running = False
 				else:
-					info.append("Start loading levels")
+					infos.append("Start loading levels")
 					level_manager = LevelManager()
 					for file_name in LoadingWindow.LEVELS_FILES:
-						info.append(LoadingWindow.INDENT + "Start loading " + file_name)
+						infos.append(LoadingWindow.INDENT + "Start loading " + file_name)
 						results.append(level_manager.load_level(file_name))
 					level_loaded = True

@@ -34,16 +34,16 @@ class Animated(object):
 
 		for frame_key in frame_list:
 			frame = frame_list[frame_key]
-			picture = picture_manager.loaded[frame[0]]
-			rect = pygame.Rect(float(frame[1]), float(frame[2]),
-							   float(frame[3]) - float(frame[1]),
-							   float(frame[4]) - float(frame[2]))
+			picture = picture_manager.loaded[frame["picture"]]
+			rect = pygame.Rect(float(frame["left"]), float(frame["top"]),
+							   float(frame["right"]) - float(frame["left"]),
+							   float(frame["bottom"]) - float(frame["top"]))
 			part = picture.subsurface(rect)
 			frames[frame_key] = part
 
-		for part in animation:
-			frame = frames[part[0]]
-			count = int(part[1])
+		for part in animation["parts"]:
+			frame = frames[part["frame"]]
+			count = int(part["duration"])
 			self._max_frame_count += count
 			self._animation.append((count, frame))
 			if two_sided:
