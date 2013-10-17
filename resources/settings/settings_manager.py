@@ -2,7 +2,7 @@ import json
 import logging
 from thread import start_new_thread, allocate_lock
 
-from resources.ressource_manager import RessourceWrapper
+from resources.resource_manager import ResourceWrapper
 
 __author__ = 'Donhilion'
 
@@ -43,7 +43,7 @@ class SettingsManager(object):
 		Returns:
 			A wrapper containing the progress information and when the setting is loaded the setting.
 		"""
-		resource_wrapper = RessourceWrapper(name=name)
+		resource_wrapper = ResourceWrapper(name=name)
 		start_new_thread(self.load_setting_asynchronously, (resource_wrapper,))
 		return resource_wrapper
 
@@ -63,11 +63,11 @@ class SettingsManager(object):
 			self._settings[wrapper.name] = json_object
 			self._lock.release()
 			wrapper.data = json_object
-			wrapper.status = RessourceWrapper.LOADED
+			wrapper.status = ResourceWrapper.LOADED
 		except Exception as ex:
 			logging.error("Error while loading picture " + wrapper.name)
 			logging.error(ex)
-			wrapper.status = RessourceWrapper.FAILED
+			wrapper.status = ResourceWrapper.FAILED
 
 	def get_setting(self, name):
 		""" Returns the setting.

@@ -2,7 +2,7 @@ import pygame
 import logging
 from thread import start_new_thread, allocate_lock
 
-from resources.ressource_manager import RessourceWrapper
+from resources.resource_manager import ResourceWrapper
 
 __author__ = 'Donhilion'
 
@@ -42,7 +42,7 @@ class PictureManager(object):
 		Returns:
 			A wrapper containing the progress information and when the picture is loaded the picture.
 		"""
-		resource_wrapper = RessourceWrapper(name = name)
+		resource_wrapper = ResourceWrapper(name = name)
 		start_new_thread(self.load_picture_asynchronously, (resource_wrapper,))
 		return resource_wrapper
 
@@ -62,13 +62,13 @@ class PictureManager(object):
 			self._loaded[resource_wrapper.name] = resource_wrapper.data
 			self._lock.release()
 			logging.debug("End loading picture " + resource_wrapper.name)
-			resource_wrapper.status = RessourceWrapper.LOADED
+			resource_wrapper.status = ResourceWrapper.LOADED
 		except Exception as ex: 
 			self._lock.release()
 			logging.error("Error while loading picture " + \
 				resource_wrapper.name)
 			logging.error(ex)
-			resource_wrapper.status = RessourceWrapper.FAILED
+			resource_wrapper.status = ResourceWrapper.FAILED
 
 	def get_picture(self, name):
 		""" Returns the picture.

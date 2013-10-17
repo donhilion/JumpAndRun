@@ -2,7 +2,7 @@ import json
 import logging
 from thread import start_new_thread, allocate_lock
 
-from resources.ressource_manager import RessourceWrapper
+from resources.resource_manager import ResourceWrapper
 
 __author__ = 'Donhilion'
 
@@ -42,7 +42,7 @@ class AnimationManager(object):
 		Returns:
 			A wrapper containing the progress information and when the animation is loaded the animation.
 		"""
-		wrapper = RessourceWrapper(name=name)
+		wrapper = ResourceWrapper(name=name)
 		start_new_thread(self.load_animation_asynchronously, (wrapper,))
 		return wrapper
 
@@ -66,12 +66,12 @@ class AnimationManager(object):
 			self._animations[wrapper.name] = (frames, animations)
 			self._lock.release()
 			logging.debug("End loading picture " + wrapper.name)
-			wrapper.status = RessourceWrapper.LOADED
+			wrapper.status = ResourceWrapper.LOADED
 		except Exception as ex:
 			logging.error("Error while loading animation " + \
 						  wrapper.name)
 			logging.error(ex)
-			wrapper.status = RessourceWrapper.FAILED
+			wrapper.status = ResourceWrapper.FAILED
 			try:
 				self._lock.release()
 			except Exception as ex:

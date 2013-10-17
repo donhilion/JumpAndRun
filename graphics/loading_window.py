@@ -5,7 +5,7 @@ from resources.levels.level_manager import LevelManager
 from resources.pictures.picture_manager import PictureManager
 from resources.settings.settings_manager import SettingsManager
 from resources.animations.animation_manager import AnimationManager
-from resources.ressource_manager import RessourceWrapper
+from resources.resource_manager import ResourceWrapper
 from resources.sounds.sound_manager import SoundManager
 
 __author__ = 'Donhilion'
@@ -112,7 +112,7 @@ class LoadingWindow(object):
 					exit() # TODO: check what else has to be done
 
 			for result in results:
-				if result.status == RessourceWrapper.LOADED:
+				if result.status == ResourceWrapper.LOADED:
 					infos.append("Done loading " + result.name)
 					results.remove(result)
 					# load images
@@ -120,7 +120,7 @@ class LoadingWindow(object):
 						self.load_pictures(result.data, infos, results)
 					if result.name == LoadingWindow.SOUNDS_FILE:
 						self.load_sounds(result.data, infos, results)
-				if result.status == RessourceWrapper.FAILED:
+				if result.status == ResourceWrapper.FAILED:
 					infos.append("Error during loading " + result.name)
 					results.remove(result)
 

@@ -1,7 +1,7 @@
 import pygame
 import logging
 from thread import start_new_thread, allocate_lock
-from resources.ressource_manager import RessourceWrapper
+from resources.resource_manager import ResourceWrapper
 
 __author__ = 'Donhilion'
 
@@ -41,7 +41,7 @@ class SoundManager(object):
 		Returns:
 			A wrapper containing the progress information and when the sound is loaded the sound.
 		"""
-		resource_wrapper = RessourceWrapper(name=name)
+		resource_wrapper = ResourceWrapper(name=name)
 		start_new_thread(self.load_sound_asynchronously, (resource_wrapper,))
 		return resource_wrapper
 
@@ -61,13 +61,13 @@ class SoundManager(object):
 			self._loaded[resource_wrapper.name] = resource_wrapper.data
 			self._lock.release()
 			logging.debug("End loading sound " + resource_wrapper.name)
-			resource_wrapper.status = RessourceWrapper.LOADED
+			resource_wrapper.status = ResourceWrapper.LOADED
 		except Exception as ex:
 			self._lock.release()
 			logging.error("Error while loading sound " + \
 						  resource_wrapper.name)
 			logging.error(ex)
-			resource_wrapper.status = RessourceWrapper.FAILED
+			resource_wrapper.status = ResourceWrapper.FAILED
 
 	def get_sound(self, name):
 		""" Returns the sound.
