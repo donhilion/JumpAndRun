@@ -24,6 +24,10 @@
         "value": "Hero.png"
     },
     {
+        "key": "HeroDie",
+        "value": "HeroDie.png"
+    },
+    {
         "key": "Heart",
         "value": "Heart.png"
     },

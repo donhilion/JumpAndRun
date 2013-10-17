@@ -2,6 +2,7 @@ from pygame import Rect
 import pygame
 
 from graphics.drawables.animated import Animated
+from graphics.drawables.animation import Animation
 from resources.animations.animation_manager import AnimationManager
 from resources.pictures.picture_manager import PictureManager
 from resources.sounds.sound_manager import SoundManager
@@ -27,6 +28,7 @@ class Character(object):
 		_stand_animation: Contains the standing animation
 		_jump_animation: Contains the jumping animation for the NONE direction.
 		_jump_right_animation: Contains the jumping animation for the directions LEFT and RIGHT.
+		_death_animation: Contains the death animation of the character.
 		_collision_rect: The rectangle for collision detection.
 		_walking_line: The rectangle to determine if the character is standing on the ground.
 		_head_line: The rectangle for collision detection during jumping.
@@ -47,7 +49,7 @@ class Character(object):
 	V_FALLING = 0.1
 
 	def __init__(self, pos=(0, 0), state=STANDING, lives=3, points=0, walk_animation=None, stand_animation=None,
-				 jump_animation=None, jump_right_animation=None):
+				 jump_animation=None, jump_right_animation=None, death_animation=None):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of the character class and sets the field information.
@@ -62,6 +64,7 @@ class Character(object):
 			stand_animation: The standing animation of the character.
 			jump_animation: The jumping animation of the character for the direction NONE.
 			jump_right_animation: The jumping animation of the character for the directions LEFT and RIGHT.
+			death_animation: The death animation of the character.
 		"""
 		self._state = state
 		self._lives = lives
@@ -82,10 +85,13 @@ class Character(object):
 			if jump_right_animation is None:
 				jump_right_animation = Animated(PictureManager.MANAGER, animation[0], animation[1]["HeroJumpRight"],
 												True)
+			if death_animation is None:
+				death_animation = (PictureManager.MANAGER, animation[0], animation[1]["HeroDie"])
 		self._walk_animation = walk_animation
 		self._stand_animation = stand_animation
 		self._jump_animation = jump_animation
 		self._jump_right_animation = jump_right_animation
+		self._death_animation = death_animation
 
 		self._collision_rect = Rect(pos[0], pos[1], 27, 48)
 		self._walking_line = Rect(pos[0], pos[1] + 48, 27, 1)
@@ -297,3 +303,14 @@ class Character(object):
 			The character's current walking line.
 		"""
 		return self._walking_line
+
+	def get_death_animation(self):
+		""" Returns the death animation.
+
+		This method returns the death animation on the current location of the character.
+
+		Returns:
+			The death animation of the character.
+		"""
+		return Animation(self._death_animation[0], self._death_animation[1], self._death_animation[2],
+						 (self._collision_rect.x - 11, self._collision_rect.y))

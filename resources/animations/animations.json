@@ -35,6 +35,41 @@
             "right": 27,
             "bottom": 240
         },
+        "HeroDie0": {
+            "picture": "HeroDie.png",
+            "left": 0,
+            "top": 0,
+            "right": 48,
+            "bottom": 48
+        },
+        "HeroDie1": {
+            "picture": "HeroDie.png",
+            "left": 48,
+            "top": 0,
+            "right": 96,
+            "bottom": 48
+        },
+        "HeroDie2": {
+            "picture": "HeroDie.png",
+            "left": 96,
+            "top": 0,
+            "right": 144,
+            "bottom": 48
+        },
+        "HeroDie3": {
+            "picture": "HeroDie.png",
+            "left": 144,
+            "top": 0,
+            "right": 192,
+            "bottom": 48
+        },
+        "HeroDie4": {
+            "picture": "HeroDie.png",
+            "left": 192,
+            "top": 0,
+            "right": 240,
+            "bottom": 48
+        },
         "Monster": {
             "picture": "monster.png",
             "left": 0,
@@ -134,6 +169,30 @@
                 {
                     "duration": 1,
                     "frame": "HeroWalk0"
+                }
+            ]
+        },
+        "HeroDie": {
+            "parts": [
+                {
+                    "duration": 10,
+                    "frame": "HeroDie0"
+                },
+                {
+                    "duration": 10,
+                    "frame": "HeroDie1"
+                },
+                {
+                    "duration": 10,
+                    "frame": "HeroDie2"
+                },
+                {
+                    "duration": 10,
+                    "frame": "HeroDie3"
+                },
+                {
+                    "duration": 10,
+                    "frame": "HeroDie4"
                 }
             ]
         },

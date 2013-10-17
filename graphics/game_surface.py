@@ -34,6 +34,7 @@ class GameSurface(object):
 		_font: The font used for displaying lives and points.
 		_level: The current level.
 		_character: The character of this game.
+		_character_death_animation: The death animation of the character.
 		_platforms: The platforms of this game.
 		_collectables: The collectables of this game.
 		_goal: The goal of this game.
@@ -89,6 +90,7 @@ class GameSurface(object):
 		self._level = LevelManager.MANAGER.get_level(level)
 
 		self._character = Character(pos=self._level.get_start())
+		self._character_death_animation = None
 		self._platforms = self._level.get_platforms()
 
 		collectables = self._level.get_collectables()
@@ -145,36 +147,36 @@ class GameSurface(object):
 			for enemy in self._enemies:
 				enemy.tick(self._platforms)
 
-			# check walking collision
-			standing = False
-			walking_line = self._character.get_walking_line()
-			for platform in self._platforms:
-				if platform.collides(walking_line):
-					standing = True
-					break
-			self._character._is_falling = not standing
-			if standing and self._jumping:
-				self._character.jump()
-				self._jump_sound.play()
+			if self._character_death_animation is None:
+				# check walking collision
+				standing = False
+				walking_line = self._character.get_walking_line()
+				for platform in self._platforms:
+					if platform.collides(walking_line):
+						standing = True
+						break
+				self._character._is_falling = not standing
+				if standing and self._jumping:
+					self._character.jump()
+					self._jump_sound.play()
 
-			if not self._character.is_invincible():
-				for enemy in self._enemies:
-					animation = enemy.collide(self._character)
-					if animation is not None:
-						self._enemies.remove(enemy)
-						self._animations.append(animation)
+				if not self._character.is_invincible():
+					for enemy in self._enemies:
+						animation = enemy.collide(self._character)
+						if animation is not None:
+							self._enemies.remove(enemy)
+							self._animations.append(animation)
 
-			self._character.tick(self._platforms, self._collectables)
-			if self._dx != 0:
-				self._character.move(self._dx, self._platforms)
+				self._character.tick(self._platforms, self._collectables)
+				if self._dx != 0:
+					self._character.move(self._dx, self._platforms)
 
-			if self._character.is_colliding(self._deadzone) or self._character.get_lives() < 1:
-				self._bg_sound.stop()
-				self._window.switch(window.Window.GAME_OVER)
+				if self._character.is_colliding(self._deadzone) or self._character.get_lives() < 1:
+					self._character_death_animation = self._character.get_death_animation()
 
-			if self._character.is_colliding(self._goal):
-				self._bg_sound.stop()
-				self._window.switch(window.Window.WIN_SCREEN, self._character.get_points())
+				if self._character.is_colliding(self._goal):
+					self._bg_sound.stop()
+					self._window.switch(window.Window.WIN_SCREEN, self._character.get_points())
 
 		# center camera around player
 		self._camera[0] = self._character.get_x() - self._width / 2
@@ -193,7 +195,11 @@ class GameSurface(object):
 			enemy.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw the character
-		self._character.draw(self._screen, tick, self._camera, (self._width, self._height))
+		if self._character_death_animation is None:
+			self._character.draw(self._screen, tick, self._camera, (self._width, self._height))
+		elif not self._character_death_animation.draw(self._screen, self._camera, tick):
+			self._bg_sound.stop()
+			self._window.switch(window.Window.GAME_OVER)
 
 		# draw animations
 		for animation in self._animations:
