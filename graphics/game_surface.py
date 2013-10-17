@@ -106,8 +106,8 @@ class GameSurface(object):
 		self._enemies = self._level.get_enemies()
 		self._animations = []
 
-		self._jump_sound = SoundManager.MANAGER.loaded[GameSurface.JUMP_SOUND_NAME]
-		self._bg_sound = SoundManager.MANAGER.loaded[GameSurface.BG_SOUND_NAME]
+		self._jump_sound = SoundManager.MANAGER.get_sound(GameSurface.JUMP_SOUND_NAME)
+		self._bg_sound = SoundManager.MANAGER.get_sound(GameSurface.BG_SOUND_NAME)
 
 	def reset_tick(self):
 		""" Resets the ticks.

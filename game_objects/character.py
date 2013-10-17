@@ -91,7 +91,7 @@ class Character(object):
 		self._walking_line = Rect(pos[0], pos[1] + 48, 27, 1)
 		self._head_line = Rect(pos[0], pos[1] - 1, 27, 1)
 
-		self._collect_sound = SoundManager.MANAGER.loaded["coin.wav"]
+		self._collect_sound = SoundManager.MANAGER.get_sound("coin.wav")
 
 	def draw(self, surface, tick, camera, size):
 		""" The drawing method.

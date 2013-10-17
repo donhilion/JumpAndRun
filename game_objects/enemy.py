@@ -58,8 +58,8 @@ class Enemy(object):
 		self._pic = pic
 		self._death_animation = death_animation
 
-		self._hit_sound = SoundManager.MANAGER.loaded["hit.wav"]
-		self._death_sound = SoundManager.MANAGER.loaded["coin.wav"]
+		self._hit_sound = SoundManager.MANAGER.get_sound("hit.wav")
+		self._death_sound = SoundManager.MANAGER.get_sound("coin.wav")
 
 	def draw(self, surface, tick, camera, size):
 		""" Draws the enemy.
