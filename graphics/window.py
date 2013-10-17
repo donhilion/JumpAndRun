@@ -46,9 +46,9 @@ class Window(object):
 		if self._settings_manager is not None:
 			try:
 				self._width = \
-					self._settings_manager.settings[Window.GRAPHICS_CONFIG][Window.WIDTH_KEY]
+					self._settings_manager.get_setting(Window.GRAPHICS_CONFIG)[Window.WIDTH_KEY]
 				self._height = \
-					self._settings_manager.settings[Window.GRAPHICS_CONFIG][Window.HEIGHT_KEY]
+					self._settings_manager.get_setting(Window.GRAPHICS_CONFIG)[Window.HEIGHT_KEY]
 			except Exception, e:
 				logging.error("Error while get window size")
 				logging.error(e)

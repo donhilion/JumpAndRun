@@ -23,4 +23,4 @@ while wrapper.status == RessourceWrapper.PENDING:
 
 print(wrapper.status)
 print(wrapper.data["width"])
-print(manager.settings["graphics.json"]["height"])
+print(manager._settings["graphics.json"]["height"])
