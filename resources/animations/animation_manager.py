@@ -33,7 +33,7 @@ class AnimationManager(object):
 		""" Loads the animation.
 
 		This method loads the animation with the given name.
-		Calling this method starts a new thread which will loads the animation.
+		Calling this method starts a new thread which will load the animation.
 		A wrapper is returned containing the progress information and when the animation is loaded the animation.
 
 		Args:

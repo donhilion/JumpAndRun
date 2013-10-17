@@ -21,7 +21,7 @@ class Static(object):
 			picture_manager: The picture_manager to use.
 			frame: The frame information to use.
 		"""
-		picture = picture_manager.loaded[frame[0]]
+		picture = picture_manager.get_picture(frame[0])
 		rect = pygame.Rect(float(frame[1]), float(frame[2]),
 						   float(frame[3]) - float(frame[1]),
 						   float(frame[4]) - float(frame[2]))

@@ -33,7 +33,7 @@ class LevelManager(object):
 		""" Loads the level.
 
 		This method loads the level with the given name.
-		Calling this method starts a new thread which will loads the level.
+		Calling this method starts a new thread which will load the level.
 		A wrapper is returned containing the progress information and when the level is loaded the level.
 
 		Args:

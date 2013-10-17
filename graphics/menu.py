@@ -57,7 +57,7 @@ class Menu(object):
 		self._width = width
 		self._height = height
 		self._window = window
-		self._bg = PictureManager.MANAGER.loaded["menuBackground.png"]
+		self._bg = PictureManager.MANAGER.get_picture("menuBackground.png")
 		self._bg = pygame.transform.scale(self._bg, (width, height))
 		self._font = pygame.font.SysFont("arial", 24)
 		self._font_height = self._font.get_linesize()

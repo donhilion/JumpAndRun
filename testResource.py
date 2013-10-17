@@ -16,11 +16,11 @@ while wrapper.status == RessourceWrapper.PENDING:
 print(wrapper.status)
 
 manager = SettingsManager()
-wrapper = manager.load_setting("graphics.xml")
+wrapper = manager.load_setting("graphics.json")
 
 while wrapper.status == RessourceWrapper.PENDING:
 	pass
 
 print(wrapper.status)
 print(wrapper.data["width"])
-print(manager.settings["graphics.xml"]["height"])
+print(manager.settings["graphics.json"]["height"])

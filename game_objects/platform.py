@@ -33,7 +33,7 @@ class Platform(object):
 		self._surface = Surface(size)
 		self._rect = Rect(pos, size)
 		if picture is None:
-			picture = PictureManager.MANAGER.loaded["grass.png"]
+			picture = PictureManager.MANAGER.get_picture("grass.png")
 		x = 0
 		y = 0
 		pic_w = picture.get_width()

@@ -34,7 +34,7 @@ class Animation(object):
 
 		for frame_key in frame_list:
 			frame = frame_list[frame_key]
-			picture = picture_manager.loaded[frame["picture"]]
+			picture = picture_manager.get_picture(frame["picture"])
 			rect = pygame.Rect(float(frame["left"]), float(frame["top"]),
 							   float(frame["right"]) - float(frame["left"]),
 							   float(frame["bottom"]) - float(frame["top"]))

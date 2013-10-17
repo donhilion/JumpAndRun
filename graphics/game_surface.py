@@ -75,11 +75,11 @@ class GameSurface(object):
 		self._height = height
 		self._window = window
 		self._camera = [0, 0]
-		self._bg = PictureManager.MANAGER.loaded[GameSurface.BG_PICTURE_NAME]
+		self._bg = PictureManager.MANAGER.get_picture(GameSurface.BG_PICTURE_NAME)
 		self._bg_w = self._bg.get_width()
 		self._bg_h = self._bg.get_height()
-		self._heart = PictureManager.MANAGER.loaded[GameSurface.HEART_PICTURE_NAME]
-		self._coin = PictureManager.MANAGER.loaded[GameSurface.COIN_PICTURE_NAME]
+		self._heart = PictureManager.MANAGER.get_picture(GameSurface.HEART_PICTURE_NAME)
+		self._coin = PictureManager.MANAGER.get_picture(GameSurface.COIN_PICTURE_NAME)
 		self._tick = 0
 		self._last_ticks = pygame.time.get_ticks()
 		self._dx = 0
@@ -98,7 +98,7 @@ class GameSurface(object):
 
 		goal = self._level.get_goal()
 		self._goal = Rect(goal, (50, 50))
-		self._goal_pic = PictureManager.MANAGER.loaded[GameSurface.GOAL_PICTURE_NAME]
+		self._goal_pic = PictureManager.MANAGER.get_picture(GameSurface.GOAL_PICTURE_NAME)
 
 		deadzone = self._level.get_deadzone()
 		self._deadzone = Rect(deadzone[:2], deadzone[2:])
