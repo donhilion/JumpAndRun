@@ -1,3 +1,5 @@
+import operator
+import sys
 import pygame2exe
 import os
 import shutil
@@ -25,6 +27,8 @@ SOUND_FOLDER = "sounds"
 SOUND_FILES = ("coin.wav", "hit.wav", "jump.wav", "music0.wav", "step.wav")
 
 if __name__ == '__main__':
+	if operator.lt(len(sys.argv), 2):
+		sys.argv.append('py2exe')
 	pygame2exe.BuildExe().run()
 	if not os.path.exists(DIST_FOLDER + os.path.sep + RESOURCES_FOLDER):
 		os.makedirs(DIST_FOLDER + os.path.sep + RESOURCES_FOLDER)

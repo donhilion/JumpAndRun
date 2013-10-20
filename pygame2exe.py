@@ -50,10 +50,10 @@ class BuildExe:
         self.project_name = "JumpAndRun"
  
         #Project url
-        self.project_url = "about:none"
+        self.project_url = "https://github.com/donhilion/JumpAndRun/"
  
         #Version of program
-        self.project_version = "0.0"
+        self.project_version = "0.1"
  
         #License of the program
         self.license = "None"
@@ -64,7 +64,7 @@ class BuildExe:
         self.copyright = "None"
  
         #Description
-        self.project_description = "None"
+        self.project_description = "A simple Jump and Run game"
  
         #Icon file (None will use pygame default icon)
         self.icon_file = None
