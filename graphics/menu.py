@@ -64,6 +64,7 @@ class Menu(object):
 		self._selected = 0
 
 		Menu.ENTRIES[0].action = self.to_game
+		Menu.ENTRIES[1].action = self.to_settings
 
 	def draw(self):
 		""" Draws the menu.
@@ -119,4 +120,11 @@ class Menu(object):
 		This method changes to the game surface.
 		"""
 		self._window.switch(window.Window.GAME)
+
+	def to_settings(self):
+		""" Changes to the settings.
+
+		This method changes to the settings screen.
+		"""
+		self._window.switch(window.Window.SETTINGS)
 		

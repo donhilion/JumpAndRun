@@ -3,11 +3,13 @@ from pygame.locals import *
 import logging
 import sys
 from graphics.game_over import GameOver
+from graphics.settings_screen import SettingsScreen
 from graphics.win_screen import WinScreen
 
 from resources.settings.settings_manager import SettingsManager
 from menu import Menu
 from game_surface import GameSurface
+from settings.settings import Settings
 
 __author__ = 'Donhilion'
 
@@ -29,7 +31,7 @@ class Window(object):
 	"""
 
 	# Values for the switch method.
-	MENU, GAME, GAME_OVER, WIN_SCREEN = range(4)
+	MENU, GAME, GAME_OVER, WIN_SCREEN, SETTINGS = range(5)
 	# The name of the config file.
 	GRAPHICS_CONFIG = "graphics.json"
 	# The key for the window width.
@@ -58,11 +60,13 @@ class Window(object):
 			logging.warn("No settings manager")
 			self._width = 400
 			self._height = 400
+		self._settings = Settings()
 		self._screen = pygame.display.set_mode((self._width, self._height), 0, 32)
 		self._menu = Menu(self._screen, self._width, self._height, self)
 		self._game = GameSurface(self._screen, self._width, self._height, self)
 		self._game_over = GameOver(self._screen, self._width, self._height, self)
 		self._win_screen = WinScreen(self._screen, self._width, self._height, self)
+		self._settings_screen = SettingsScreen(self._screen, self._width, self._height, self, self._settings)
 		self._current_display = self._menu
 
 	def start(self):
@@ -97,7 +101,7 @@ class Window(object):
 		Switches the current display according to the value in type.
 
 		Args:
-			type: Determines which display should be switched to. Valid values are MENU, GAME, GAME_OVER, WIN_SCREEN.
+			type: Determines which display should be switched to. Valid values are MENU, GAME, GAME_OVER, WIN_SCREEN, SETTINGS.
 			params: An optional list of parameters. This list will be forwarded to the new display.
 					Currently only the win screen has parameters.
 		"""
@@ -105,6 +109,7 @@ class Window(object):
 			self._current_display = self._menu
 		elif type == Window.GAME:
 			self._current_display = self._game
+			self._game.get_settings(self._settings)
 			self._game.reset_tick()
 			self._game.start_music()
 		elif type == Window.GAME_OVER:
@@ -114,3 +119,5 @@ class Window(object):
 			self._win_screen.set_points(params)
 			self._current_display = self._win_screen
 			self._game = GameSurface(self._screen, self._width, self._height, self) # reset game
+		elif type == Window.SETTINGS:
+			self._current_display = self._settings_screen

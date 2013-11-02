@@ -84,3 +84,14 @@ class SoundManager(object):
 		if name in self._loaded.keys():
 			return self._loaded[name]
 		return None
+
+	def set_volume(self, value):
+		""" Sets the volume.
+
+		This method sets the volume for all loaded sounds.
+
+		Args:
+			value: The new volume value.
+		"""
+		for sound in self._loaded.values():
+			sound.set_volume(value)

@@ -6,6 +6,7 @@ from resources.levels.level_manager import LevelManager
 
 from resources.pictures.picture_manager import PictureManager
 from resources.sounds.sound_manager import SoundManager
+from settings.settings import Settings
 import window
 
 __author__ = 'Donhilion'
@@ -263,3 +264,21 @@ class GameSurface(object):
 		"""
 		self._bg_sound.play()
 		pass
+
+	def get_settings(self, settings):
+		""" Reads the settings.
+
+		This method reads and applies the given settings.
+
+		Args:
+			settings: The settings to read.
+		"""
+		# set volume
+		volume = settings.get_value(Settings.SOUND_VOLUME) / 10.0
+		music = settings.get_value(Settings.MUSIC_VOLUME) / 10.0
+		fx = settings.get_value(Settings.FX_VOLUME) / 10.0
+
+		music *= volume
+		fx *= volume
+		SoundManager.MANAGER.set_volume(fx)
+		self._bg_sound.set_volume(music)
