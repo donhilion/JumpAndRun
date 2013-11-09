@@ -38,5 +38,9 @@
     {
         "key": "Grass",
         "value": "grass.png"
+    },
+    {
+        "key": "bg",
+        "value": "bg.png"
     }
 ]

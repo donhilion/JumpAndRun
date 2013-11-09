@@ -48,7 +48,7 @@ class GameSurface(object):
 	"""
 
 	# The name of the background picture file.
-	BG_PICTURE_NAME = "sparksis.png"
+	BG_PICTURE_NAME = "bg.png"
 	# The name of the heat picture file.
 	HEART_PICTURE_NAME = "Heart.png"
 	# The name of the coin picture file.
@@ -127,9 +127,9 @@ class GameSurface(object):
 		Before something is drawn, the changes in the game world will be calculated depending on the amount of ticks which have passed.
 		"""
 		y = -(self._camera[1] % self._bg_h)
-		while y < self._bg_h:
+		while y < self._height:
 			x = -(self._camera[0] % self._bg_w)
-			while x < self._bg_w:
+			while x < self._width:
 				self._screen.blit(self._bg, (x, y))
 				x += self._bg_w
 			y += self._bg_h
