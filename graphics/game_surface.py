@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from game_objects.character import Character
 from game_objects.collectable import Collectable
+from graphics.screen import Screen
 from resources.levels.level_manager import LevelManager
 
 from resources.pictures.picture_manager import PictureManager
@@ -12,7 +13,7 @@ import window
 __author__ = 'Donhilion'
 
 
-class GameSurface(object):
+class GameSurface(Screen):
 	""" The game surface class.
 
 	An object of this class represents the game surface where a level will be shown and the character moves.

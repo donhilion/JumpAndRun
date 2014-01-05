@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
+from graphics.screen import Screen
 from resources.pictures.picture_manager import PictureManager
 import window
 
@@ -22,7 +23,7 @@ class MenuEntry(object):
 		self.action = action
 
 
-class Menu(object):
+class Menu(Screen):
 	""" The menu class.
 
 	An instance of this class represents the menu screen.
@@ -101,18 +102,6 @@ class Menu(object):
 			entry = Menu.ENTRIES[self._selected]
 			if entry.action is not None:
 				entry.action()
-
-
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
-
-		Args:
-			key: The key event information provided by pygame.
-		"""
-		pass
 
 	def to_game(self):
 		""" Changes to the game.

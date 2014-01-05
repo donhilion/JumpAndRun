@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from graphics.screen import Screen
 from settings.settings import Settings
 import window
 from resources.pictures.picture_manager import PictureManager
@@ -51,7 +52,7 @@ class SettingsEntry(object):
 				self.value -= 1
 
 
-class SettingsScreen(object):
+class SettingsScreen(Screen):
 	""" The settings screen class.
 
 	An instance of this class represents a settings screen.
@@ -140,15 +141,3 @@ class SettingsScreen(object):
 			for entry in self._entries:
 				self._settings.set_value(entry.name, entry.value)
 			self._window.switch(window.Window.MENU)
-
-
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
-
-		Args:
-			key: The key event information provided by pygame.
-		"""
-		pass
