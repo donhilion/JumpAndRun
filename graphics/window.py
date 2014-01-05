@@ -69,6 +69,21 @@ class Window(object):
 		self._settings_screen = SettingsScreen(self._screen, self._width, self._height, self, self._settings)
 		self._current_display = self._menu
 
+		pygame.joystick.init()
+
+		joystick_count = pygame.joystick.get_count()
+		if joystick_count > 0:
+			self._joystick = pygame.joystick.Joystick(0)
+			self._joystick.init()
+			self._joystick_hat_count = self._joystick.get_numhats()
+			self._joystick_button_count = self._joystick.get_numbuttons()
+			self._joystick_last_dx = 0
+			self._joystick_last_dy = 0
+			self._joystick_button_pressed = False
+			self._joystick_start_pressed = False
+		else:
+			self._joystick = None
+
 	def start(self):
 		""" Starts the event handling.
 
@@ -83,6 +98,46 @@ class Window(object):
 					self._current_display.key_down(event.key)
 				elif event.type == KEYUP:
 					self._current_display.key_up(event.key)
+				elif event.type == JOYHATMOTION:
+					if self._joystick is not None:
+						if self._joystick_hat_count > 0:
+							(dx, dy) = self._joystick.get_hat(0)
+
+							if dx > self._joystick_last_dx:
+								if self._joystick_last_dx < 0:
+									self._current_display.key_up(K_LEFT)
+								if dx > 0:
+									self._current_display.key_down(K_RIGHT)
+									self._joystick_last_dx = 1
+								else:
+									self._joystick_last_dx = 0
+							if dx < self._joystick_last_dx:
+								if self._joystick_last_dx > 0:
+									self._current_display.key_up(K_RIGHT)
+								if dx < 0:
+									self._current_display.key_down(K_LEFT)
+									self._joystick_last_dx = -1
+								else:
+									self._joystick_last_dx = 0
+
+							if dy > self._joystick_last_dy:
+								if self._joystick_last_dy < 0:
+									self._current_display.key_up(K_DOWN)
+								if dy > 0:
+									self._current_display.key_down(K_UP)
+									self._joystick_last_dy = 1
+								else:
+									self._joystick_last_dy = 0
+							if dy < self._joystick_last_dy:
+								if self._joystick_last_dy > 0:
+									self._current_display.key_up(K_UP)
+								if dy < 0:
+									self._current_display.key_down(K_DOWN)
+									self._joystick_last_dy = -1
+								else:
+									self._joystick_last_dy = 0
+				elif event.type == JOYBUTTONDOWN:
+					pass
 
 			self._current_display.draw()
 			pygame.display.update()
