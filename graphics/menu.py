@@ -1,3 +1,4 @@
+import math
 import pygame
 from pygame.locals import *
 import sys
@@ -64,6 +65,9 @@ class Menu(Screen):
 		self._font_height = self._font.get_linesize()
 		self._selected = 0
 
+		self._first_y = 0.5 * (self._height - len(Menu.ENTRIES) * (self._font_height + 5))
+		self._delty_y = self._font_height + 5
+
 		Menu.ENTRIES[0].action = self.to_game
 		Menu.ENTRIES[1].action = self.to_settings
 
@@ -73,7 +77,7 @@ class Menu(Screen):
 		This method draws the menu on the screen.
 		"""
 		self._screen.blit(self._bg, (0, 0))
-		y = 0.5 * (self._height - len(Menu.ENTRIES) * (self._font_height + 5))
+		y = self._first_y
 		i = 0
 		for entry in Menu.ENTRIES:
 			if self._selected == i:
@@ -81,7 +85,7 @@ class Menu(Screen):
 			else:
 				text = self._font.render(entry.text, True, (150, 150, 0))
 			self._screen.blit(text, ((self._width - text.get_width()) / 2, y))
-			y += self._font_height + 5
+			y += self._delty_y
 			i += 1
 
 	def key_down(self, key):
@@ -116,4 +120,33 @@ class Menu(Screen):
 		This method changes to the settings screen.
 		"""
 		self._window.switch(window.Window.SETTINGS)
-		
+
+	def mouse_click(self, pos, button):
+		""" Handles mouse click events.
+
+		This method is a stub for handling mouse click events.
+
+		Args:
+			pos: The position of the mouse.
+			button: The button pressed.
+		"""
+		if button == 1:
+			entry = Menu.ENTRIES[self._selected]
+			if entry.action is not None:
+				entry.action()
+
+	def mouse_move(self, pos):
+		""" Handles mouse move events.
+
+		This method is a stub for handling mouse movement events.
+
+		Args:
+			pos: The position of the mouse.
+		"""
+		if pos[1] < self._first_y:
+			self._selected = 0
+		else:
+			dy = math.trunc((pos[1] - self._first_y) / self._delty_y)
+			if dy >= len(Menu.ENTRIES):
+				dy = len(Menu.ENTRIES)-1
+			self._selected = dy

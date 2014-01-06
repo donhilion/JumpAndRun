@@ -39,3 +39,24 @@ class Screen(object):
 			key: The key event information provided by pygame.
 		"""
 		pass
+
+	def mouse_click(self, pos, button):
+		""" Handles mouse click events.
+
+		This method is a stub for handling mouse click events.
+
+		Args:
+			pos: The position of the mouse.
+			button: The button pressed.
+		"""
+		pass
+
+	def mouse_move(self, pos):
+		""" Handles mouse move events.
+
+		This method is a stub for handling mouse movement events.
+
+		Args:
+			pos: The position of the mouse.
+		"""
+		pass

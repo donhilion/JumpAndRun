@@ -83,6 +83,10 @@ class Window(object):
 					self._current_display.key_down(event.key)
 				elif event.type == KEYUP:
 					self._current_display.key_up(event.key)
+				elif event.type == MOUSEBUTTONUP:
+					self._current_display.mouse_click(event.pos, event.button)
+				elif event.type == MOUSEMOTION:
+					self._current_display.mouse_move(event.pos)
 
 			self._current_display.draw()
 			pygame.display.update()
