@@ -38,6 +38,8 @@ class Menu(Screen):
 		_font: The font to use.
 		_font_height: The height of the used font.
 		_selected: The index of the selected menu entry.
+		_first_y: The y position of the first menu entry.
+		_delta_y: The difference in the y axis between two
 	"""
 
 	# The menu entries to show.
@@ -66,7 +68,7 @@ class Menu(Screen):
 		self._selected = 0
 
 		self._first_y = 0.5 * (self._height - len(Menu.ENTRIES) * (self._font_height + 5))
-		self._delty_y = self._font_height + 5
+		self._delta_y = self._font_height + 5
 
 		Menu.ENTRIES[0].action = self.to_game
 		Menu.ENTRIES[1].action = self.to_settings
@@ -85,7 +87,7 @@ class Menu(Screen):
 			else:
 				text = self._font.render(entry.text, True, (150, 150, 0))
 			self._screen.blit(text, ((self._width - text.get_width()) / 2, y))
-			y += self._delty_y
+			y += self._delta_y
 			i += 1
 
 	def key_down(self, key):
@@ -146,7 +148,7 @@ class Menu(Screen):
 		if pos[1] < self._first_y:
 			self._selected = 0
 		else:
-			dy = math.trunc((pos[1] - self._first_y) / self._delty_y)
+			dy = math.trunc((pos[1] - self._first_y) / self._delta_y)
 			if dy >= len(Menu.ENTRIES):
 				dy = len(Menu.ENTRIES)-1
 			self._selected = dy
