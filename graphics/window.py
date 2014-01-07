@@ -98,58 +98,59 @@ class Window(object):
 					self._current_display.key_down(event.key)
 				elif event.type == KEYUP:
 					self._current_display.key_up(event.key)
-				elif event.type == JOYHATMOTION:
-					if self._joystick is not None:
-						if self._joystick_hat_count > 0:
-							(dx, dy) = self._joystick.get_hat(0)
-
-							if dx > self._joystick_last_dx:
-								if self._joystick_last_dx < 0:
-									self._current_display.key_up(K_LEFT)
-								if dx > 0:
-									self._current_display.key_down(K_RIGHT)
-									self._joystick_last_dx = 1
-								else:
-									self._joystick_last_dx = 0
-							if dx < self._joystick_last_dx:
-								if self._joystick_last_dx > 0:
-									self._current_display.key_up(K_RIGHT)
-								if dx < 0:
-									self._current_display.key_down(K_LEFT)
-									self._joystick_last_dx = -1
-								else:
-									self._joystick_last_dx = 0
-
-							if dy > self._joystick_last_dy:
-								if self._joystick_last_dy < 0:
-									self._current_display.key_up(K_DOWN)
-								if dy > 0:
-									self._current_display.key_down(K_UP)
-									self._joystick_last_dy = 1
-								else:
-									self._joystick_last_dy = 0
-							if dy < self._joystick_last_dy:
-								if self._joystick_last_dy > 0:
-									self._current_display.key_up(K_UP)
-								if dy < 0:
-									self._current_display.key_down(K_DOWN)
-									self._joystick_last_dy = -1
-								else:
-									self._joystick_last_dy = 0
-				elif event.type == JOYBUTTONDOWN:
-					if event.button >= 0 and event.button < 4:
-						self._current_display.key_down(K_SPACE)
-					elif event.button == 7:
-						self._current_display.key_down(K_ESCAPE)
-				elif event.type == JOYBUTTONUP:
-					if event.button >= 0 and event.button < 4:
-						self._current_display.key_up(K_SPACE)
-					elif event.button == 7:
-						self._current_display.key_up(K_ESCAPE)
 				elif event.type == MOUSEBUTTONUP:
 					self._current_display.mouse_click(event.pos, event.button)
 				elif event.type == MOUSEMOTION:
 					self._current_display.mouse_move(event.pos)
+				elif self._settings.get_value(Settings.JOYSTICK):
+					if event.type == JOYHATMOTION:
+						if self._joystick is not None:
+							if self._joystick_hat_count > 0:
+								(dx, dy) = self._joystick.get_hat(0)
+
+								if dx > self._joystick_last_dx:
+									if self._joystick_last_dx < 0:
+										self._current_display.key_up(K_LEFT)
+									if dx > 0:
+										self._current_display.key_down(K_RIGHT)
+										self._joystick_last_dx = 1
+									else:
+										self._joystick_last_dx = 0
+								if dx < self._joystick_last_dx:
+									if self._joystick_last_dx > 0:
+										self._current_display.key_up(K_RIGHT)
+									if dx < 0:
+										self._current_display.key_down(K_LEFT)
+										self._joystick_last_dx = -1
+									else:
+										self._joystick_last_dx = 0
+
+								if dy > self._joystick_last_dy:
+									if self._joystick_last_dy < 0:
+										self._current_display.key_up(K_DOWN)
+									if dy > 0:
+										self._current_display.key_down(K_UP)
+										self._joystick_last_dy = 1
+									else:
+										self._joystick_last_dy = 0
+								if dy < self._joystick_last_dy:
+									if self._joystick_last_dy > 0:
+										self._current_display.key_up(K_UP)
+									if dy < 0:
+										self._current_display.key_down(K_DOWN)
+										self._joystick_last_dy = -1
+									else:
+										self._joystick_last_dy = 0
+					elif event.type == JOYBUTTONDOWN:
+						if event.button >= 0 and event.button < 4:
+							self._current_display.key_down(K_SPACE)
+						elif event.button == 7:
+							self._current_display.key_down(K_ESCAPE)
+					elif event.type == JOYBUTTONUP:
+						if event.button >= 0 and event.button < 4:
+							self._current_display.key_up(K_SPACE)
+						elif event.button == 7:
+							self._current_display.key_up(K_ESCAPE)
 
 			self._current_display.draw()
 			pygame.display.update()

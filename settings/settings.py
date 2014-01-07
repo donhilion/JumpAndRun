@@ -16,6 +16,8 @@ class Settings(object):
 	MUSIC_VOLUME = "MUSIC_VOLUME"
 	# The volume of the sound effects
 	FX_VOLUME = "FX_VOLUME"
+	# Determines if the joystick is enabled
+	JOYSTICK = "JOYSTICK"
 
 	def __init__(self):
 		""" Generates a new instance of this class.
@@ -23,7 +25,7 @@ class Settings(object):
 		Generates a new instance of this class and sets the field information.
 		The available settings will be preset with standard values.
 		"""
-		self._settings = {Settings.SOUND_VOLUME: 10, Settings.MUSIC_VOLUME: 10, Settings.FX_VOLUME: 10}
+		self._settings = {Settings.SOUND_VOLUME: 10, Settings.MUSIC_VOLUME: 10, Settings.FX_VOLUME: 10, Settings.JOYSTICK: True}
 
 	def get_value(self, key):
 		""" Returns the settings value.
