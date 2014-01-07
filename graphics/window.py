@@ -137,7 +137,15 @@ class Window(object):
 								else:
 									self._joystick_last_dy = 0
 				elif event.type == JOYBUTTONDOWN:
-					pass
+					if event.button >= 0 and event.button < 4:
+						self._current_display.key_down(K_SPACE)
+					elif event.button == 7:
+						self._current_display.key_down(K_ESCAPE)
+				elif event.type == JOYBUTTONUP:
+					if event.button >= 0 and event.button < 4:
+						self._current_display.key_up(K_SPACE)
+					elif event.button == 7:
+						self._current_display.key_up(K_ESCAPE)
 
 			self._current_display.draw()
 			pygame.display.update()

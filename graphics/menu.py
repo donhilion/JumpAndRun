@@ -97,7 +97,7 @@ class Menu(object):
 			self._selected += 1
 		elif key == K_UP and self._selected > 0:
 			self._selected -= 1
-		elif key == K_RETURN:
+		elif key == K_RETURN or key == K_SPACE:
 			entry = Menu.ENTRIES[self._selected]
 			if entry.action is not None:
 				entry.action()

@@ -238,7 +238,7 @@ class GameSurface(object):
 			self._dx += 1
 		elif key == K_LEFT:
 			self._dx -= 1
-		elif key == K_UP:
+		elif key == K_UP or key == K_SPACE:
 			self._jumping = True
 
 	def key_up(self, key):
@@ -254,7 +254,7 @@ class GameSurface(object):
 			self._dx -= 1
 		elif key == K_LEFT:
 			self._dx += 1
-		elif key == K_UP:
+		elif key == K_UP or key == K_SPACE:
 			self._jumping = False
 
 	def start_music(self):
