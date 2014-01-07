@@ -26,7 +26,7 @@ class SettingsEntry(object):
 	"""
 
 	# possible value for type
-	SCALE10, ACTION = range(2)
+	SCALE10, ACTION, BOOL = range(3)
 
 	def __init__(self, name, text, type, value, button_size=0, action=None):
 		""" Generates a new instance of this class.
@@ -57,6 +57,8 @@ class SettingsEntry(object):
 		if self.type == SettingsEntry.SCALE10:
 			if self.value < 10:
 				self.value += 1
+		elif self.type == SettingsEntry.BOOL:
+			self.value = not self.value
 
 	def dec(self):
 		""" Decreases the setting's value.
@@ -66,6 +68,8 @@ class SettingsEntry(object):
 		if self.type == SettingsEntry.SCALE10:
 			if self.value > 0:
 				self.value -= 1
+		elif self.type == SettingsEntry.BOOL:
+			self.inc()
 
 	def act(self):
 		""" Performs the action.
@@ -74,6 +78,8 @@ class SettingsEntry(object):
 		"""
 		if self.type == SettingsEntry.ACTION and self.action is not None:
 			self.action()
+		elif self.type == SettingsEntry.BOOL:
+			self.inc()
 
 
 class SettingsScreen(Screen):
@@ -132,16 +138,21 @@ class SettingsScreen(Screen):
 									self._settings.get_value(Settings.MUSIC_VOLUME), button_size=self._font_height)
 		fx_entry = SettingsEntry(Settings.FX_VOLUME, "Effects", SettingsEntry.SCALE10,
 								 self._settings.get_value(Settings.FX_VOLUME), button_size=self._font_height)
+		joystick_entry = SettingsEntry(Settings.JOYSTICK, "Controller", SettingsEntry.BOOL,
+								 self._settings.get_value(Settings.JOYSTICK), button_size=self._font_height)
 		back_entry = SettingsEntry(None, "back", SettingsEntry.ACTION,
 								 None, action=self.back)
 
-		self._entries = (sound_entry, music_entry, fx_entry, back_entry)
+		self._entries = (sound_entry, music_entry, fx_entry, joystick_entry, back_entry)
 
 		self._first_y = 0.5 * (self._height - len(self._entries) * (self._font_height + 5))
 		self._delta_y = self._font_height + 5
 
 		self._plus_button = None
 		self._minus_button = None
+
+		self._unchecked_bool = None
+		self._checked_bool = None
 
 		self._prepare_buttons()
 
@@ -160,6 +171,18 @@ class SettingsScreen(Screen):
 		self._minus_button = Surface((self._font_height, self._font_height), pygame.SRCALPHA, 32)
 		self._minus_button.convert_alpha()
 		pygame.draw.rect(self._minus_button, SettingsScreen.COLOR, Rect(0, self._font_height/3, self._font_height, self._font_height/3))
+
+		# draw unchecked bool button
+		self._unchecked_bool = Surface((self._font_height, self._font_height), pygame.SRCALPHA, 32)
+		self._unchecked_bool.convert_alpha()
+		pygame.draw.rect(self._unchecked_bool, SettingsScreen.COLOR, Rect(0, 0, self._font_height, self._font_height), 3)
+
+		# draw checked bool button
+		self._checked_bool = Surface((self._font_height, self._font_height), pygame.SRCALPHA, 32)
+		self._checked_bool.convert_alpha()
+		pygame.draw.rect(self._checked_bool, SettingsScreen.COLOR, Rect(0, 0, self._font_height, self._font_height), 3)
+		pygame.draw.line(self._checked_bool, SettingsScreen.COLOR, (0, 0), (self._font_height, self._font_height), 3)
+		pygame.draw.line(self._checked_bool, SettingsScreen.COLOR, (0, self._font_height), (self._font_height, 0), 3)
 
 	def draw(self):
 		""" Draws the settings.
@@ -184,6 +207,12 @@ class SettingsScreen(Screen):
 				self._screen.blit(self._plus_button, entry.plus.topleft)
 				entry.minus.topleft = (self._width - 105 - value.get_width() - self._font_height, y)
 				self._screen.blit(self._minus_button, entry.minus.topleft)
+			elif entry.type == SettingsEntry.BOOL:
+				entry.plus.topleft = (self._width - 100 - self._font_height, y)
+				if entry.value:
+					self._screen.blit(self._checked_bool, entry.plus.topleft)
+				else:
+					self._screen.blit(self._unchecked_bool, entry.plus.topleft)
 			y += self._delta_y
 			i += 1
 
