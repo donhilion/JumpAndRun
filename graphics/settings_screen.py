@@ -221,7 +221,7 @@ class SettingsScreen(Screen):
 			self._entries[self._selected].dec()
 		elif key == K_ESCAPE:
 			self.back()
-		elif key == K_RETURN:
+		elif key == K_RETURN or key == K_SPACE:
 			self._entries[self._selected].act()
 
 	def mouse_click(self, pos, button):
