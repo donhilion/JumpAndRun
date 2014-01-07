@@ -1,11 +1,12 @@
 import pygame
 from pygame.constants import K_ESCAPE
+from graphics.screen import Screen
 import window
 
 __author__ = 'Donhilion'
 
 
-class GameOver(object):
+class GameOver(Screen):
 	""" The game over class.
 
 	An object of this class represents a game over screen.
@@ -58,14 +59,3 @@ class GameOver(object):
 		"""
 		if key == K_ESCAPE:
 			self._window.switch(window.Window.MENU)
-
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
-
-		Args:
-			key: The key event information provided by pygame.
-		"""
-		pass

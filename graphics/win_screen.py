@@ -1,11 +1,12 @@
 import pygame
 from pygame.constants import K_ESCAPE
+from graphics.screen import Screen
 import window
 
 __author__ = 'Donhilion'
 
 
-class WinScreen(object):
+class WinScreen(Screen):
 	""" The win screen class.
 
 	A instance of this class represents a win screen.
@@ -66,17 +67,6 @@ class WinScreen(object):
 		"""
 		if key == K_ESCAPE:
 			self._window.switch(window.Window.MENU)
-
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
-
-		Args:
-			key: The key event information provided by pygame.
-		"""
-		pass
 
 	def set_points(self, points):
 		""" Sets the points.

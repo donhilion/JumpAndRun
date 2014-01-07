@@ -146,6 +146,10 @@ class Window(object):
 						self._current_display.key_up(K_SPACE)
 					elif event.button == 7:
 						self._current_display.key_up(K_ESCAPE)
+				elif event.type == MOUSEBUTTONUP:
+					self._current_display.mouse_click(event.pos, event.button)
+				elif event.type == MOUSEMOTION:
+					self._current_display.mouse_move(event.pos)
 
 			self._current_display.draw()
 			pygame.display.update()

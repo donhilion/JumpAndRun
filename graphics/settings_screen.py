@@ -1,5 +1,8 @@
+import math
 import pygame
 from pygame.locals import *
+from pygame.surface import Surface
+from graphics.screen import Screen
 from settings.settings import Settings
 import window
 from resources.pictures.picture_manager import PictureManager
@@ -17,20 +20,34 @@ class SettingsEntry(object):
 		text: The text to display.
 		type: The type of the setting.
 		value: The value of the setting.
+		minus: The rectangle for decreasing the value.
+		plus: The rectangle for increasing the value.
+		action: The action to perform.
 	"""
 
 	# possible value for type
-	SCALE10 = range(1)
+	SCALE10, ACTION = range(2)
 
-	def __init__(self, name, text, type, value):
+	def __init__(self, name, text, type, value, button_size=0, action=None):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of this class and sets the field information.
+
+		Args:
+			name: The name of the setting.
+			text: The text to display.
+			type: The type of the setting.
+			value: The value of the setting.
+			button_size: The size of the buttons. The value is used for the rectangles.
+			action: The action to perform.
 		"""
 		self.name = name
 		self.text = text
 		self.type = type
 		self.value = value
+		self.minus = Rect(0, 0, button_size, button_size)
+		self.plus = Rect(0, 0, button_size, button_size)
+		self.action = action
 
 	def inc(self):
 		""" Increases the setting's value.
@@ -50,8 +67,16 @@ class SettingsEntry(object):
 			if self.value > 0:
 				self.value -= 1
 
+	def act(self):
+		""" Performs the action.
 
-class SettingsScreen(object):
+		This method performs the defined action.
+		"""
+		if self.type == SettingsEntry.ACTION and self.action is not None:
+			self.action()
+
+
+class SettingsScreen(Screen):
 	""" The settings screen class.
 
 	An instance of this class represents a settings screen.
@@ -67,23 +92,29 @@ class SettingsScreen(object):
 		_font: The font to use.
 		_font_height: The height of the used font.
 		_selected: The index of the selected settings entry.
+		_first_y: The y coordinate of the first entry.
+		_delta_y: The difference in the y axis between the entries.
+		_plus_button: The pre-rendered plus button.
+		_minus_button: The pre-rendered minus button.
 	"""
+	# color of an entry
+	SELECTED_COLOR = (255, 255, 0)
+	# color of the selected entry
+	COLOR = (150, 150, 0)
 
 	def __init__(self, screen, width, height, window, settings):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of this class and sets the field information.
+
+		Args:
+			screen: The screen to draw on.
+			width: The width of the screen.
+			height: The height of the screen.
+			window: The surrounding window.
+			settings: The game settings.
 		"""
 		self._settings = settings
-
-		sound_entry = SettingsEntry(Settings.SOUND_VOLUME, "Sound", SettingsEntry.SCALE10,
-									self._settings.get_value(Settings.SOUND_VOLUME))
-		music_entry = SettingsEntry(Settings.MUSIC_VOLUME, "Music", SettingsEntry.SCALE10,
-									self._settings.get_value(Settings.MUSIC_VOLUME))
-		fx_entry = SettingsEntry(Settings.FX_VOLUME, "Effects", SettingsEntry.SCALE10,
-								 self._settings.get_value(Settings.FX_VOLUME))
-
-		self._entries = (sound_entry, music_entry, fx_entry)
 
 		self._screen = screen
 		self._width = width
@@ -95,25 +126,76 @@ class SettingsScreen(object):
 		self._font_height = self._font.get_linesize()
 		self._selected = 0
 
+		sound_entry = SettingsEntry(Settings.SOUND_VOLUME, "Sound", SettingsEntry.SCALE10,
+									self._settings.get_value(Settings.SOUND_VOLUME), button_size=self._font_height)
+		music_entry = SettingsEntry(Settings.MUSIC_VOLUME, "Music", SettingsEntry.SCALE10,
+									self._settings.get_value(Settings.MUSIC_VOLUME), button_size=self._font_height)
+		fx_entry = SettingsEntry(Settings.FX_VOLUME, "Effects", SettingsEntry.SCALE10,
+								 self._settings.get_value(Settings.FX_VOLUME), button_size=self._font_height)
+		back_entry = SettingsEntry(None, "back", SettingsEntry.ACTION,
+								 None, action=self.back)
+
+		self._entries = (sound_entry, music_entry, fx_entry, back_entry)
+
+		self._first_y = 0.5 * (self._height - len(self._entries) * (self._font_height + 5))
+		self._delta_y = self._font_height + 5
+
+		self._plus_button = None
+		self._minus_button = None
+
+		self._prepare_buttons()
+
+	def _prepare_buttons(self):
+		""" Prepares the buttons.
+
+		This method pre-renders the plus and minus buttons.
+		"""
+		# draw plus button
+		self._plus_button = Surface((self._font_height, self._font_height), pygame.SRCALPHA, 32)
+		self._plus_button.convert_alpha()
+		pygame.draw.rect(self._plus_button, SettingsScreen.COLOR, Rect(0, self._font_height/3, self._font_height, self._font_height/3))
+		pygame.draw.rect(self._plus_button, SettingsScreen.COLOR, Rect(self._font_height/3, 0, self._font_height/3, self._font_height))
+
+		# draw minus button
+		self._minus_button = Surface((self._font_height, self._font_height), pygame.SRCALPHA, 32)
+		self._minus_button.convert_alpha()
+		pygame.draw.rect(self._minus_button, SettingsScreen.COLOR, Rect(0, self._font_height/3, self._font_height, self._font_height/3))
+
 	def draw(self):
 		""" Draws the settings.
 
 		This method draws the settings on the screen.
 		"""
 		self._screen.blit(self._bg, (0, 0))
-		y = 0.5 * (self._height - len(self._entries) * (self._font_height + 5))
+		y = self._first_y
 		i = 0
 		for entry in self._entries:
 			if self._selected == i:
-				text = self._font.render(entry.text, True, (255, 255, 0))
+				text = self._font.render(entry.text, True, SettingsScreen.SELECTED_COLOR)
 			else:
-				text = self._font.render(entry.text, True, (150, 150, 0))
-			value = self._font.render(str(entry.value), True, (150, 150, 0))
-
+				text = self._font.render(entry.text, True, SettingsScreen.COLOR)
 			self._screen.blit(text, (100, y))
-			self._screen.blit(value, (self._width - 100 - value.get_width(), y))
-			y += self._font_height + 5
+
+			if entry.type == SettingsEntry.SCALE10:
+				value = self._font.render(str(entry.value), True, SettingsScreen.COLOR)
+				self._screen.blit(value, (self._width - 100 - value.get_width(), y))
+
+				entry.plus.topleft = (self._width - 95, y)
+				self._screen.blit(self._plus_button, entry.plus.topleft)
+				entry.minus.topleft = (self._width - 105 - value.get_width() - self._font_height, y)
+				self._screen.blit(self._minus_button, entry.minus.topleft)
+			y += self._delta_y
 			i += 1
+
+	def back(self):
+		""" Returns to the main menu.
+
+		This method saves the settings and return to the main menu.
+		"""
+		for entry in self._entries:
+			if entry.name is not None:
+				self._settings.set_value(entry.name, entry.value)
+		self._window.switch(window.Window.MENU)
 
 	def key_down(self, key):
 		""" Handles key down events.
@@ -121,6 +203,8 @@ class SettingsScreen(object):
 		This method handles key down events.
 		The pressing of the up or down key changes the selected settings entry.
 		The pressing of the left or right key changes the value of the selected entry.
+		The pressing of the return key performs the action of the entry.
+		The pressing of the escape key returns to the main menu.
 
 		Args:
 			key: The key event information provided by pygame.
@@ -136,19 +220,40 @@ class SettingsScreen(object):
 		elif key == K_LEFT:
 			self._entries[self._selected].dec()
 		elif key == K_ESCAPE:
-			# save settings
-			for entry in self._entries:
-				self._settings.set_value(entry.name, entry.value)
-			self._window.switch(window.Window.MENU)
+			self.back()
+		elif key == K_RETURN:
+			self._entries[self._selected].act()
 
+	def mouse_click(self, pos, button):
+		""" Handles mouse click events.
 
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
+		This method is handles mouse click events.
 
 		Args:
-			key: The key event information provided by pygame.
+			pos: The position of the mouse.
+			button: The button pressed.
 		"""
-		pass
+		if button == 1:
+			entry = self._entries[self._selected]
+			if entry.plus.collidepoint(pos):
+				entry.inc()
+			elif entry.minus.collidepoint(pos):
+				entry.dec()
+			else:
+				entry.act()
+
+	def mouse_move(self, pos):
+		""" Handles mouse move events.
+
+		This method handles mouse movement events.
+
+		Args:
+			pos: The position of the mouse.
+		"""
+		if pos[1] < self._first_y:
+			self._selected = 0
+		else:
+			dy = math.trunc((pos[1] - self._first_y) / self._delta_y)
+			if dy >= len(self._entries):
+				dy = len(self._entries)-1
+			self._selected = dy

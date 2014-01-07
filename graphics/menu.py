@@ -1,6 +1,8 @@
+import math
 import pygame
 from pygame.locals import *
 import sys
+from graphics.screen import Screen
 from resources.pictures.picture_manager import PictureManager
 import window
 
@@ -22,7 +24,7 @@ class MenuEntry(object):
 		self.action = action
 
 
-class Menu(object):
+class Menu(Screen):
 	""" The menu class.
 
 	An instance of this class represents the menu screen.
@@ -36,6 +38,8 @@ class Menu(object):
 		_font: The font to use.
 		_font_height: The height of the used font.
 		_selected: The index of the selected menu entry.
+		_first_y: The y position of the first menu entry.
+		_delta_y: The difference in the y axis between two
 	"""
 
 	# The menu entries to show.
@@ -63,6 +67,9 @@ class Menu(object):
 		self._font_height = self._font.get_linesize()
 		self._selected = 0
 
+		self._first_y = 0.5 * (self._height - len(Menu.ENTRIES) * (self._font_height + 5))
+		self._delta_y = self._font_height + 5
+
 		Menu.ENTRIES[0].action = self.to_game
 		Menu.ENTRIES[1].action = self.to_settings
 
@@ -72,7 +79,7 @@ class Menu(object):
 		This method draws the menu on the screen.
 		"""
 		self._screen.blit(self._bg, (0, 0))
-		y = 0.5 * (self._height - len(Menu.ENTRIES) * (self._font_height + 5))
+		y = self._first_y
 		i = 0
 		for entry in Menu.ENTRIES:
 			if self._selected == i:
@@ -80,7 +87,7 @@ class Menu(object):
 			else:
 				text = self._font.render(entry.text, True, (150, 150, 0))
 			self._screen.blit(text, ((self._width - text.get_width()) / 2, y))
-			y += self._font_height + 5
+			y += self._delta_y
 			i += 1
 
 	def key_down(self, key):
@@ -102,18 +109,6 @@ class Menu(object):
 			if entry.action is not None:
 				entry.action()
 
-
-	def key_up(self, key):
-		""" Handles key up events.
-
-		This method handles key up events.
-		These events will be ignored.
-
-		Args:
-			key: The key event information provided by pygame.
-		"""
-		pass
-
 	def to_game(self):
 		""" Changes to the game.
 
@@ -127,4 +122,33 @@ class Menu(object):
 		This method changes to the settings screen.
 		"""
 		self._window.switch(window.Window.SETTINGS)
-		
+
+	def mouse_click(self, pos, button):
+		""" Handles mouse click events.
+
+		This method is a stub for handling mouse click events.
+
+		Args:
+			pos: The position of the mouse.
+			button: The button pressed.
+		"""
+		if button == 1:
+			entry = Menu.ENTRIES[self._selected]
+			if entry.action is not None:
+				entry.action()
+
+	def mouse_move(self, pos):
+		""" Handles mouse move events.
+
+		This method is a stub for handling mouse movement events.
+
+		Args:
+			pos: The position of the mouse.
+		"""
+		if pos[1] < self._first_y:
+			self._selected = 0
+		else:
+			dy = math.trunc((pos[1] - self._first_y) / self._delta_y)
+			if dy >= len(Menu.ENTRIES):
+				dy = len(Menu.ENTRIES)-1
+			self._selected = dy
