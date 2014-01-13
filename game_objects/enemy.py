@@ -124,6 +124,7 @@ class Enemy(object):
 			self._hit_sound.play()
 		elif character.is_colliding(self._head_rect):
 			character.change_points(10)
+			character.jump()
 			self._death_sound.play()
 			return Animation(self._death_animation[0], self._death_animation[1], self._death_animation[2],
 							 (self._collision_rect.x - 14, self._collision_rect.y - 14))
