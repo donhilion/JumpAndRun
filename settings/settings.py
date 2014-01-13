@@ -25,7 +25,7 @@ class Settings(object):
 		Generates a new instance of this class and sets the field information.
 		The available settings will be preset with standard values.
 		"""
-		self._settings = {Settings.SOUND_VOLUME: 10, Settings.MUSIC_VOLUME: 10, Settings.FX_VOLUME: 10, Settings.JOYSTICK: True}
+		self._settings = {Settings.SOUND_VOLUME: 5, Settings.MUSIC_VOLUME: 5, Settings.FX_VOLUME: 10, Settings.JOYSTICK: True}
 
 	def get_value(self, key):
 		""" Returns the settings value.
