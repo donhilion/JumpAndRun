@@ -132,6 +132,55 @@
             "top": 0,
             "right": 30,
             "bottom": 30
+        },
+        "FlyingExplode0": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 58,
+            "right": 58,
+            "bottom": 116
+        },
+        "FlyingExplode1": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 116,
+            "right": 58,
+            "bottom": 174
+        },
+        "FlyingExplode2": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 174,
+            "right": 58,
+            "bottom": 232
+        },
+        "FlyingExplode3": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 232,
+            "right": 58,
+            "bottom": 290
+        },
+        "FlyingExplode4": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 290,
+            "right": 58,
+            "bottom": 348
+        },
+        "FlyingExplode5": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 348,
+            "right": 58,
+            "bottom": 406
+        },
+        "FlyingExplode6": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 406,
+            "right": 58,
+            "bottom": 464
         }
     },
     "animations": {
@@ -248,6 +297,38 @@
                 {
                     "duration": 1,
                     "frame": "Flying"
+                }
+            ]
+        },
+        "FlyingExplode": {
+            "parts": [
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode0"
+                },
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode1"
+                },
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode2"
+                },
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode3"
+                },
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode4"
+                },
+                {
+                    "duration": 10,
+                    "frame": "FlyingExplode5"
+                },
+                {
+                    "duration": 20,
+                    "frame": "FlyingExplode6"
                 }
             ]
         }

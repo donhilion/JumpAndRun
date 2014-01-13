@@ -163,7 +163,7 @@ class FlyingEnemy(Enemy):
 			if pic is None:
 				pic = Animated(PictureManager.MANAGER, animation[0], animation[1]["Flying"])
 			if death_animation is None:
-				death_animation = (PictureManager.MANAGER, animation[0], animation[1]["Flying"])
+				death_animation = (PictureManager.MANAGER, animation[0], animation[1]["FlyingExplode"])
 
 		pos = route[0][:]
 		Enemy.__init__(self, pos=pos, pic=pic, death_animation=death_animation)
