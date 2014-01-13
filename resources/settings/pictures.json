@@ -42,5 +42,9 @@
     {
         "key": "bg",
         "value": "bg.png"
+    },
+    {
+        "key": "flying",
+        "value": "flying.png"
     }
 ]

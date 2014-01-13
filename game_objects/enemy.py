@@ -4,6 +4,7 @@ from graphics.drawables.animation import Animation
 from resources.animations.animation_manager import AnimationManager
 from resources.pictures.picture_manager import PictureManager
 from resources.sounds.sound_manager import SoundManager
+from utils.vector import Vector2
 
 __author__ = 'Donhilion'
 
@@ -128,3 +129,71 @@ class Enemy(object):
 							 (self._collision_rect.x - 14, self._collision_rect.y - 14))
 		return None
 
+
+class FlyingEnemy(Enemy):
+	""" The flying enemy class.
+
+	An instance of this class represents an flying enemy in the game.
+
+	Attributes:
+		_route: The route the enemy flies.
+		_next_point: The index of the next point the enemy flies to.
+		_vector: The current vector the enemy flies.
+		_flying_type: The flying type of the enemy.
+		_forward: This optional flag, used for the LINE type, determines if the enemy moves forward or backward in the list of points.
+	"""
+
+	# Values for the _flying_type attributes.
+	LINE, CIRCLE = range(2)
+
+	def __init__(self, route=None, flying_type=CIRCLE, pic=None, death_animation=None):
+		if route is None or len(route) < 2:
+			route = [[0, -50], [100, -50], [100, 0]]
+		self._route = route
+		self._next_point = 1
+		self._vector = (Vector2(route[1]) - Vector2(route[0])).normal()
+		self._flying_type = flying_type
+		if flying_type == FlyingEnemy.LINE:
+			self._forward = True
+
+		if pic is None or death_animation is None:
+			animation_manager = AnimationManager.MANAGER
+			animation = animation_manager.get_animation("animations")
+			if pic is None:
+				pic = Animated(PictureManager.MANAGER, animation[0], animation[1]["Flying"])
+			if death_animation is None:
+				death_animation = (PictureManager.MANAGER, animation[0], animation[1]["Flying"])
+
+		pos = route[0][:]
+		Enemy.__init__(self, pos=pos, pic=pic, death_animation=death_animation)
+
+	def tick(self, platforms):
+		""" Method for handling the game ticks.
+
+		This method should be called every tick to calculate the enemy changes.
+
+		Args:
+			platforms: The platforms of the level.
+		"""
+		vector = self._vector * Enemy.SPEED
+
+		self._pos[0] += vector.x
+		self._pos[1] += vector.y
+		self._collision_rect = self._collision_rect.move(vector.x, vector.y)
+		self._head_rect = self._head_rect.move(vector.x, vector.y)
+
+		if not self._vector == (Vector2(self._route[self._next_point]) - Vector2(self._pos)).normal():
+			if self._flying_type == FlyingEnemy.CIRCLE:
+				next_point = (self._next_point + 1) % len(self._route)
+			elif self._forward:
+				next_point = self._next_point + 1
+				if next_point >= len(self._route):
+					self._forward = False
+					next_point -= 2
+			else:
+				next_point = self._next_point - 1
+				if next_point < 0:
+					self._forward = True
+					next_point += 2
+			self._vector = (Vector2(self._route[next_point]) - Vector2(self._route[self._next_point])).normal()
+			self._next_point = next_point

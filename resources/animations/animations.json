@@ -125,6 +125,13 @@
             "top": 406,
             "right": 58,
             "bottom": 464
+        },
+        "Flying": {
+            "picture": "flying.png",
+            "left": 0,
+            "top": 0,
+            "right": 30,
+            "bottom": 30
         }
     },
     "animations": {
@@ -233,6 +240,14 @@
                 {
                     "duration": 20,
                     "frame": "MonsterExplode6"
+                }
+            ]
+        },
+        "Flying": {
+            "parts": [
+                {
+                    "duration": 1,
+                    "frame": "Flying"
                 }
             ]
         }
