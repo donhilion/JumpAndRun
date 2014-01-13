@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from game_objects.character import Character
 from game_objects.collectable import Collectable
+from game_objects.enemy import FlyingEnemy
 from graphics.screen import Screen
 from resources.levels.level_manager import LevelManager
 
@@ -107,7 +108,7 @@ class GameSurface(Screen):
 		deadzone = self._level.get_deadzone()
 		self._deadzone = Rect(deadzone[:2], deadzone[2:])
 
-		self._enemies = self._level.get_enemies()
+		self._enemies = self._level.get_enemies()[:]
 		self._animations = []
 
 		self._jump_sound = SoundManager.MANAGER.get_sound(GameSurface.JUMP_SOUND_NAME)

@@ -1,5 +1,5 @@
 import json
-from game_objects.enemy import Enemy
+from game_objects.enemy import Enemy, FlyingEnemy
 from platform import Platform
 
 __author__ = 'Donhilion'
@@ -57,6 +57,8 @@ class Level(object):
 				x = enemy["x"]
 				y = enemy["y"]
 				enemies.append(Enemy([x, y]))
+			for enemy in json_map["flying"]:
+				enemies.append(FlyingEnemy(enemy))
 		if platforms is None:
 			platforms = []
 		if collectables is None:
