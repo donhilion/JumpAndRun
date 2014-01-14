@@ -33,14 +33,14 @@ class Vector2(object):
 		Returns:
 			This vector normalized.
 		"""
-		l = len(self)
+		l = self.get_length()
 		if l > 0:
 			return self / l
 		else:
 			return self
 
 	def __eq__(self, other):
-		return self.x == other.x and self.y == other.y
+		return round(self.x, 1) == round(other.x, 1) and round(self.y, 1) == round(other.y, 1)
 
 	def __neg__(self):
 		return Vector2([-self.x, -self.y])
@@ -57,7 +57,7 @@ class Vector2(object):
 	def __div__(self, other):
 		return Vector2([self.x / other, self.y / other])
 
-	def __len__(self):
+	def get_length(self):
 		return math.sqrt(self.x**2 + self.y**2)
 
 	def __str__(self):

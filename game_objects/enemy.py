@@ -180,8 +180,10 @@ class FlyingEnemy(Enemy):
 
 		self._pos[0] += vector.x
 		self._pos[1] += vector.y
-		self._collision_rect = self._collision_rect.move(vector.x, vector.y)
-		self._head_rect = self._head_rect.move(vector.x, vector.y)
+		self._collision_rect.x = self._pos[0]
+		self._collision_rect.y = self._pos[1]
+		self._head_rect.x = self._pos[0]
+		self._head_rect.y = self._pos[1] - 4
 
 		if not self._vector == (Vector2(self._route[self._next_point]) - Vector2(self._pos)).normal():
 			if self._flying_type == FlyingEnemy.CIRCLE:
