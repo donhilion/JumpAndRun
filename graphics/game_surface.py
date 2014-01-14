@@ -62,7 +62,7 @@ class GameSurface(Screen):
 	# The name of the background sound file.
 	BG_SOUND_NAME = "music0.wav"
 
-	def __init__(self, screen, width, height, window, level="level0"):
+	def __init__(self, screen, width, height, window, level="level1"):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of this class and sets the field information.
