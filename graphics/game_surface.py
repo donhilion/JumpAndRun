@@ -60,7 +60,7 @@ class GameSurface(Screen):
 	# The name of the jump sound file.
 	JUMP_SOUND_NAME = "jump.wav"
 	# The name of the background sound file.
-	BG_SOUND_NAME = "music0.wav"
+	BG_SOUND_NAME = "music2.wav"
 
 	def __init__(self, screen, width, height, window, level="level1"):
 		""" Generates a new instance of this class.
@@ -264,7 +264,7 @@ class GameSurface(Screen):
 
 		This method will start the background sound as a repeating music.
 		"""
-		self._bg_sound.play()
+		self._bg_sound.play(-1)
 		pass
 
 	def get_settings(self, settings):
