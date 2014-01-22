@@ -32,7 +32,7 @@ class LoadingWindow(object):
 	# List of animation files to load.
 	ANIMATIONS_FILES = ("animations",)
 	# List of level files to load.
-	LEVELS_FILES = ("level0","level1")
+	LEVELS_FILES = ("level0", "level1", "level2")
 	# String used for indentation.
 	INDENT = "    "
 	# The dimensions of the window.

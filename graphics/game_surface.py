@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from game_objects.character import Character
 from game_objects.collectable import Collectable
-from game_objects.enemy import FlyingEnemy
 from graphics.screen import Screen
 from resources.levels.level_manager import LevelManager
 
@@ -62,7 +61,7 @@ class GameSurface(Screen):
 	# The name of the background sound file.
 	BG_SOUND_NAME = "music2.wav"
 
-	def __init__(self, screen, width, height, window, level="level1"):
+	def __init__(self, screen, width, height, window, level="level2"):
 		""" Generates a new instance of this class.
 
 		Generates a new instance of this class and sets the field information.
@@ -95,6 +94,9 @@ class GameSurface(Screen):
 		self._character = Character(pos=self._level.get_start())
 		self._character_death_animation = None
 		self._platforms = self._level.get_platforms()
+		self._moving_platforms = self._level.get_moving_platforms()
+		# add moving platforms to platforms
+		self._platforms += self._moving_platforms
 
 		collectables = self._level.get_collectables()
 		self._collectables = []
@@ -108,7 +110,7 @@ class GameSurface(Screen):
 		deadzone = self._level.get_deadzone()
 		self._deadzone = Rect(deadzone[:2], deadzone[2:])
 
-		self._enemies = self._level.get_enemies()[:]
+		self._enemies = self._level.get_enemies()
 		self._animations = []
 
 		self._jump_sound = SoundManager.MANAGER.get_sound(GameSurface.JUMP_SOUND_NAME)
@@ -150,7 +152,12 @@ class GameSurface(Screen):
 			for enemy in self._enemies:
 				enemy.tick(self._platforms)
 
+			# handle moving platforms
+			for platform in self._moving_platforms:
+				platform.tick()
+
 			if self._character_death_animation is None:
+				self._character.tick(self._platforms, self._collectables)
 				# check walking collision
 				standing = False
 				walking_line = self._character.get_walking_line()
@@ -170,7 +177,6 @@ class GameSurface(Screen):
 							self._enemies.remove(enemy)
 							self._animations.append(animation)
 
-				self._character.tick(self._platforms, self._collectables)
 				if self._dx != 0:
 					self._character.move(self._dx, self._platforms)
 
@@ -187,6 +193,8 @@ class GameSurface(Screen):
 
 		# draw the platforms
 		for platform in self._platforms:
+			platform.draw(self._screen, tick, self._camera, (self._width, self._height))
+		for platform in self._moving_platforms:
 			platform.draw(self._screen, tick, self._camera, (self._width, self._height))
 
 		# draw collectables

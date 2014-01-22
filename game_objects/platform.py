@@ -1,6 +1,7 @@
 from pygame import Surface, Rect
 
 from resources.pictures.picture_manager import PictureManager
+from utils.vector import Vector2
 
 
 __author__ = 'Donhilion'
@@ -72,3 +73,68 @@ class Platform(object):
 			True if the platform collides with the given rectangle. False otherwise.
 		"""
 		return self._rect.colliderect(rect)
+
+class MovingPlatform(Platform):
+	""" The moving platform class.
+
+	An instance of this class represents a moving platform of a level.
+
+	Attributes:
+		_route: The rout of this moving platform.
+		_flying_type: The flying type of the moving platform.
+		_forward: This optional flag, used for the LINE type, determines if the moving platform moves forward or backward in the route.
+		_next_point: The index of the next point the moving platform flies to.
+		_vector: The vector determining the direction of the moving platform.
+	"""
+
+	# Values for the _flying_type attributes.
+	LINE, CIRCLE = range(2)
+
+	# Speed of the flying platform.
+	SPEED = 0.75
+
+	def __init__(self, size=(10, 10), route=([0, 0], (50, 0)), flying_type=CIRCLE):
+		""" Generates a new instance of this class.
+
+		Generates a new instance of this class and sets the field information.
+
+		Args:
+			size: The size of the moving platform.
+			route: The route the moving platform.
+			flying_type: The flying type of the moving platform.
+		"""
+		Platform.__init__(self, pos=route[0][:], size=size)
+		self._route = route
+		self._flying_type = flying_type
+		if flying_type == MovingPlatform.LINE:
+			self._forward = True
+		self._next_point = 1
+		self._vector = (Vector2(route[1]) - Vector2(route[0])).normal()
+
+	def tick(self):
+		""" Method for handling the game ticks.
+
+		This method should be called every tick to calculate the moving platform changes.
+		"""
+		vector = self._vector * MovingPlatform.SPEED
+
+		self._pos[0] += vector.x
+		self._pos[1] += vector.y
+		self._rect.x = self._pos[0]
+		self._rect.y = self._pos[1]
+
+		if not self._vector == (Vector2(self._route[self._next_point]) - Vector2(self._pos)).normal():
+			if self._flying_type == MovingPlatform.CIRCLE:
+				next_point = (self._next_point + 1) % len(self._route)
+			elif self._forward:
+				next_point = self._next_point + 1
+				if next_point >= len(self._route):
+					self._forward = False
+					next_point -= 2
+			else:
+				next_point = self._next_point - 1
+				if next_point < 0:
+					self._forward = True
+					next_point += 2
+			self._vector = (Vector2(self._route[next_point]) - Vector2(self._route[self._next_point])).normal()
+			self._next_point = next_point
