@@ -30,8 +30,10 @@ class Character(object):
 		_jump_right_animation: Contains the jumping animation for the directions LEFT and RIGHT.
 		_death_animation: Contains the death animation of the character.
 		_collision_rect: The rectangle for collision detection.
-		_walking_line: The rectangle to determine if the character is standing on the ground.
-		_head_line: The rectangle for collision detection during jumping.
+		_top_rect: The rectangle for on the top of the character.
+		_bottom_rect: The rectangle for on the bottom of the character.
+		_left_rect: The rectangle for on the left of the character.
+		_right_rect: The rectangle for on the right of the character.
 		_collect_sound: The sound for collecting coins.
 	"""
 
@@ -47,8 +49,12 @@ class Character(object):
 	MAX_FALLING = 2
 	# Vertical acceleration.
 	V_FALLING = 0.1
+	# Width of the character.
+	WIDTH = 27
+	# Height of the character.
+	HEIGHT = 48
 
-	def __init__(self, pos=(0, 0), state=STANDING, lives=3, points=0, walk_animation=None, stand_animation=None,
+	def __init__(self, pos=[0, 0], state=STANDING, lives=3, points=0, walk_animation=None, stand_animation=None,
 				 jump_animation=None, jump_right_animation=None, death_animation=None):
 		""" Generates a new instance of this class.
 
@@ -93,9 +99,14 @@ class Character(object):
 		self._jump_right_animation = jump_right_animation
 		self._death_animation = death_animation
 
-		self._collision_rect = Rect(pos[0], pos[1], 27, 48)
-		self._walking_line = Rect(pos[0], pos[1] + 48, 27, 1)
-		self._head_line = Rect(pos[0], pos[1] - 1, 27, 1)
+		self._pos = pos[:]
+
+		self._collision_rect = Rect(pos[0], pos[1], Character.WIDTH, Character.HEIGHT)
+
+		self._top_rect = Rect(pos[0], pos[1], Character.WIDTH, 1)
+		self._bottom_rect = Rect(pos[0], pos[1] + Character.HEIGHT - 1, Character.WIDTH, 1)
+		self._left_rect = Rect(pos[0], pos[1], 1, Character.HEIGHT - 1)
+		self._right_rect = Rect(pos[0] + Character.WIDTH - 1, pos[1], 1, Character.HEIGHT - 1)
 
 		self._collect_sound = SoundManager.MANAGER.get_sound("coin.wav")
 
@@ -125,9 +136,14 @@ class Character(object):
 												self._collision_rect.y - camera[1], tick,
 												self._direction == Character.LEFT)
 		if Character.DEBUG:
-			pygame.draw.rect(surface, (255, 255, 255), self._collision_rect, 1)
-			pygame.draw.rect(surface, (255, 255, 255), self._walking_line, 1)
-			pygame.draw.rect(surface, (255, 255, 255), self._head_line, 1)
+			move = camera[:]
+			move[0] *= -1
+			move[1] *= -1
+			pygame.draw.rect(surface, (255, 255, 255), self._collision_rect.move(move), 2)
+			pygame.draw.rect(surface, (255, 0, 0), self._top_rect.move(move), 1)
+			pygame.draw.rect(surface, (255, 0, 0), self._bottom_rect.move(move), 1)
+			pygame.draw.rect(surface, (0, 0, 255), self._left_rect.move(move), 1)
+			pygame.draw.rect(surface, (0, 0, 255), self._right_rect.move(move), 1)
 
 	def tick(self, platforms, collectables):
 		""" Method for handling game ticks.
@@ -148,24 +164,33 @@ class Character(object):
 			self._state = Character.JUMPING
 		else:
 			self._dy = 0
-		self._collision_rect = self._collision_rect.move(0, self._dy)
-		self._walking_line = self._walking_line.move(0, self._dy)
-		self._head_line = self._head_line.move(0, self._dy)
-		colliding = None
+		self._pos[1] += self._dy
+		self._adjust_rects()
+
+		movedX = 0
+		movedY = 0
 		for platform in platforms:
-			if platform.collides(self._collision_rect):
-				colliding = platform
-				break
-		if colliding is not None:
 			while platform.collides(self._collision_rect):
-				if platform.collides(self._walking_line):
-					direction = -1.0
-				else:
-					direction = 1.0
-				self._dy *= 0.5
-				self._collision_rect = self._collision_rect.move(0, direction)
-				self._walking_line = self._walking_line.move(0, direction)
-				self._head_line = self._head_line.move(0, direction)
+				dx = 0
+				dy = 0
+				if platform.collides(self._top_rect):
+					dy += 1
+				if platform.collides(self._bottom_rect):
+					dy -= 1
+				if platform.collides(self._left_rect):
+					dx += 1
+				if platform.collides(self._right_rect):
+					dx -= 1
+				if dx == 0 and dy == 0: # completely in platform
+					print("a")
+					return # TODO: dead
+				if (dx != 0 and dx == -movedX) or (dy != 0 and dy == -movedY): # crushed
+					return # TODO: dead
+				self._pos[0] += dx
+				self._pos[1] += dy
+				self._adjust_rects()
+				movedX = dx
+				movedY = dy
 
 		for collectable in collectables:
 			if collectable.collides(self._collision_rect):
@@ -188,17 +213,10 @@ class Character(object):
 		elif dx > 0:
 			self._direction = Character.RIGHT
 
-		self._collision_rect = self._collision_rect.move(dx * Character.SPEED, 0)
-		self._walking_line = self._walking_line.move(dx * Character.SPEED, 0)
-		self._head_line = self._head_line.move(dx * Character.SPEED, 0)
+		self._pos[0] += dx * Character.SPEED
+		self._adjust_rects()
 		if self._state is not Character.JUMPING:
 			self._state = Character.WALKING
-		for platform in platforms:
-			if platform.collides(self._collision_rect):
-				self._collision_rect = self._collision_rect.move(-dx * Character.SPEED, 0)
-				self._walking_line = self._walking_line.move(-dx * Character.SPEED, 0)
-				self._head_line = self._head_line.move(-dx * Character.SPEED, 0)
-				break
 
 	def jump(self):
 		""" This method lets the character jump.
@@ -302,7 +320,7 @@ class Character(object):
 		Returns:
 			The character's current walking line.
 		"""
-		return self._walking_line
+		return self._bottom_rect.move(0,1)
 
 	def get_death_animation(self):
 		""" Returns the death animation.
@@ -314,3 +332,15 @@ class Character(object):
 		"""
 		return Animation(self._death_animation[0], self._death_animation[1], self._death_animation[2],
 						 (self._collision_rect.x - 11, self._collision_rect.y))
+
+	def _adjust_rects(self):
+		self._collision_rect.x = self._pos[0]
+		self._collision_rect.y = self._pos[1]
+		self._top_rect.x = self._collision_rect.x
+		self._top_rect.y = self._collision_rect.y
+		self._bottom_rect.x = self._collision_rect.x
+		self._bottom_rect.y = self._collision_rect.y + Character.HEIGHT - 1
+		self._left_rect.x = self._collision_rect.x
+		self._left_rect.y = self._collision_rect.y
+		self._right_rect.x = self._collision_rect.x + Character.WIDTH - 1
+		self._right_rect.y = self._collision_rect.y
